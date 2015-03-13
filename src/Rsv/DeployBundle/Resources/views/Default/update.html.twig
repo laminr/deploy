@@ -1,0 +1,24 @@
+<!-- PREPROD -->
+<h2>
+    <span class="right">
+        <span id="{{ currentServer }}"></span>
+    </span>
+</h2>
+
+
+<div class="row line">
+    <div class="col-md-12 title">{% trans %}rsv3.deploy.update{% endtrans %}</div>
+    <form class="col-xs-12">
+        <button class="col-xs-12 btn btn-success" id="{{ currentUpdate }}">{% trans %}rsv3.deploy.update{% endtrans %}</button>
+    </form>
+</div>
+
+<div class="row line">
+    <div class="col-md-12 title">{% trans %}rsv3.deploy.changeBranch{% endtrans %}</div>
+    <form action="" class="forms forms-inline col-md-8 col-lg-12" disabled="disabled">
+        <select class="select-branch col-sm-8 control">
+            <option ng-repeat="branch in branchList" value="[[branch]]">[[branch]]</option>
+        </select>
+        <button class="btn-info col-sm-4 control" id="{{ currentActive }}">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+rsv3:
+    deploy:
+        project: "Projets"
+        deployment: "Déploiement"
+        qualif:  "Qualification"
+        preprod:  "Pré-Production"
+        prod:  "Production"
+        branchs:  "Branches existantes"
+        changeBranch: "Changer de branche"
+        changeTag: "Activer"
+        activBanch: "Activer une branche"
+        newTag: "Nouveau"
+        activTag: "Activer un Tag"
+        tag: "Tag"
+        tagLabel: "TAG-"
+        currentBranch:  "Branche"
+        currentTag: "Tag actif"
+        notdeployed: "Non déployé"
+        
+        validate: "Valider"
+        activate: "Activer"
+        update: "Mise à jour"
+        loading: "chargement..."
+        updating: "mise à jour..."
+        show:  "Ouvrir"
+
+    server:
+        qualif: "Qualification"
+        preprod: "Pré-Production"
+        prod: "Production"

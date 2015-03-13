@@ -1,0 +1,3 @@
+rsv_deploy:
+    resource: "@RsvDeployBundle/Controller"
+    type:     annotation

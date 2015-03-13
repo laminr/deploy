@@ -1,0 +1,3 @@
+rsv_deploy_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: RsvDeployBundle:Default:index }
