@@ -28,3 +28,6 @@ rsv3:
         qualif: "Qualification"
         preprod: "Pré-Production"
         prod: "Production"
+
+    project:
+        selectOne: Sélectionner un projet

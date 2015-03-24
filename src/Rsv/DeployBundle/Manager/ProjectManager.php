@@ -28,7 +28,19 @@ class ProjectManager extends BaseManager
     public function getProjectName() {
         return  $this->getRepository()->getProjectName();
     }
-    
+
+    public function getProject($id = 0) {
+        return $this->getRepository()->getProject($id);
+    }
+
+    public function getRepoFrom($name = "") {
+        return  $this->getRepository()->getRepoFrom();
+    }
+
+    public function getEnvIds($envRepoId = 0) {
+        return  $this->getRepository()->getEnvIds($envRepoId);
+    }
+
     /**
     * Save Project entity
     *

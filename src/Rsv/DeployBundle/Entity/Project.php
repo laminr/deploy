@@ -13,6 +13,19 @@ use Doctrine\ORM\Mapping as ORM;
 class Project
 {
     const CLASS_NAME = "RsvDeployBundle:Project";
+
+    const ENV_REPO 		= "REPO";
+    const ENV_QUALIF 	= "QUALIF";
+    const ENV_PREPROD	= "PREPROD";
+    const ENV_PROD 		= "PROD";
+
+    const COL_ID 		= "id";
+    const COL_NAME		= "name";
+    const COL_ENV 		= "environment";
+    const COL_DOMAIN 	= "domain";
+    const COL_PATH 		= "path";
+    const COL_USER 		= "user";
+    const COL_PASSWD	= "password";
     
     /**
      * @var integer
