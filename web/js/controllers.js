@@ -1,5 +1,5 @@
 var deployApp = angular
-    .module('deployApp', [])
+    .module('deployApp', ['deployFilters'])
     .config(
         function($interpolateProvider){
             $interpolateProvider.startSymbol('[[').endSymbol(']]');
@@ -24,6 +24,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     $scope.current = $scope.msg.loading;
     $scope.envIds = [];
     $scope.fetchMsg = [];
+    $scope.target = "";
 
     $scope.showServer = function (server) {
 
@@ -44,7 +45,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }
         $scope.currentEnv = server;
         $scope.getCurrentBranch();
-    }
+    };
 
     $scope.select = function(id) {
 
@@ -70,7 +71,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 alert("Oops! Env");
             }
         );
-    }
+    };
 
     $scope.getCurrentBranch = function() {
 
@@ -92,8 +93,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 alert("Oops! Env");
             }
         );
-    }
-
+    };
     $scope.updateMe = function() {
 
         $scope.fetchMsg = [$scope.msg.loading];
@@ -107,7 +107,23 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 alert("Oops! Env");
             }
         );
-    }
+    };
 
+    $scope.changeSource = function() {
+
+        if ($scope.target != "") {
+
+            $scope.fetchMsg = [$scope.msg.loading];
+
+            var url = params.urls.update+"/"+$scope.currentEnvId+"/"+$scope.target;
+            $http.get(url).success(function(data) {
+                $scope.fetchMsg = data;
+            }).error(
+                function() {
+                    alert("Oops! Env");
+                }
+            );
+        }
+    }
 
 }]);

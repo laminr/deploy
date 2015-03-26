@@ -177,24 +177,24 @@ class AjaxController extends Controller
 	 *        	: clé environnement/projet
 	 * @param string $branch
 	 *        	: le nom de la branche/tag à mettre en place
+     * @return msg
+     * @Route("/branch/change/{envId}/{target}" , name="_ajax_change_source")
 	 */
-	public function changeSourceAction($envId = "", $label = "") {
+	public function changeSourceAction($envId = 0, $target = "") {
 
-		$response = "";
-		log_message ( "info", "changeSourceJSON envId=" . $envId . " label=" . $label );
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
 
-		if ($envId == "" || $label == "") {
-			$message = "Erreur de paramètre d'appel : envId = $envId ; branche/tag = $label";
-			$response = responseError ( $message );
-			log_message ( "info", "changeSourceJSON Error ==> $message" );
-		} else {
-			$label = urldecode ( $label );
-			$returns = $this->deployDao->doChangeSource ( $envId, $label );
-			$response = responseSuccess ( $returns );
-			log_message ( "info", "changeSourceJSON Success ==> " . print_r ( $response, true ) );
-		}
-		
-		echo json_encode ( $response );
+        $data = array();
+        if ($target != "") {
+            $project = new ProjectManager($this->getDoctrine()->getManager());
+            $cmd = new CommandManager(AjaxController::$logger, $project);
+
+            $data = $cmd->doChangeSource($envId, $target);
+        }
+
+        $response = new JsonResponse();
+        return $response->setData( $data );
 	}
 	
 	/**

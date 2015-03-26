@@ -130,17 +130,16 @@ class CommandManager {
     /**
      * Modification de la source (branche/tag) d'un projet
      * @param string $envId : id de l'environnement et projet
-     * @param string $label : le nom de la branche / tag
+     * @param string $target : le nom de la branche / tag
      * @return tableau message ssh de retour
      */
-    public function doChangeSource($envId = "", $label = "") {
+    public function doChangeSource($envId = 0, $target = "") {
 
-        $values = array();
         $project = $this->projects->getProject($envId);
 
         $path = $project->getPath();
 
-        $command = 'cd '.$path."; ".GitBusiness::CMD_CHANGE_SOURCE.$label;
+        $command = 'cd '.$path."; ".GitBusiness::CMD_CHANGE_SOURCE.$target;
 
         $ssh = new SshBusiness($this->logger);
         $values = $ssh->execute($project, $command);
