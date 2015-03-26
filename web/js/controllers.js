@@ -17,6 +17,9 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         prod: {  name : "prod", show : false}
     };
 
+    $scope.lastTag = { g:0, r:0, c:0 };
+    $scope.tagTarget = { g: "G0", r: "R0", c: "C0" };
+
     $scope.currentEnv = $scope.server.qualif;
     $scope.currentEnvId = 0;
     $scope.branchList = ["loading"];
@@ -42,6 +45,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             $scope.server.qualif.show = false;
             $scope.server.preprod.show = false;
             $scope.server.prod.show = true;
+            $scope.getLastTag();
         }
         $scope.currentEnv = server;
         $scope.getCurrentBranch();
@@ -88,6 +92,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         var url = params.urls.branchCurrent+"/"+$scope.currentEnvId;
         $http.get(url).success(function(data) {
             $scope.current = data.branch;
+            $scope.target = data.branch;
         }).error(
             function() {
                 alert("Oops! Env");
@@ -115,15 +120,28 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
             $scope.fetchMsg = [$scope.msg.loading];
 
-            var url = params.urls.update+"/"+$scope.currentEnvId+"/"+$scope.target;
+            var url = params.urls.change+"/"+$scope.currentEnvId+"/"+$scope.target;
             $http.get(url).success(function(data) {
                 $scope.fetchMsg = data;
+                $scope.getCurrentBranch();
             }).error(
                 function() {
                     alert("Oops! Env");
                 }
             );
         }
+    }
+
+    $scope.getLastTag = function() {
+
+        var url = params.urls.tagLast+"/"+$scope.currentEnvId;
+        $http.get(url).success(function(data) {
+            $scope.lastTag = data;
+        }).error(
+            function() {
+                alert("Oops! Env");
+            }
+        );
     }
 
 }]);

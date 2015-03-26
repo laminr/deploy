@@ -78,6 +78,12 @@ class Project
      */
     private $password;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=6, nullable=false)
+     */
+    private $tag;
 
 
     /**
@@ -226,5 +232,28 @@ class Project
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Set Last Tag
+     *
+     * @param string $tag
+     * @return Project
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get $tag
+     *
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
     }
 }

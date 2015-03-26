@@ -15,7 +15,7 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" ng-show="selected">
                 <li ng-class="{ active: server.qualif.show}" ng-click="showServer(server.qualif)">
                     <a href="#">
                         {% trans %}rsv3.server.qualif{% endtrans %}<span class="sr-only">(current)</span>

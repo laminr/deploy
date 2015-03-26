@@ -69,6 +69,10 @@ class CommandManager {
         $projects = $this->projects->getProject($projectId);
 
         $path = $projects->getPath();
+
+        if ($path == "")
+            return $path;
+
         $git = $requestTag
             ? GitBusiness::CMD_TAG_CURRENT
             : GitBusiness::CMD_BRANCH_CURRENT;
@@ -95,37 +99,6 @@ class CommandManager {
 
         return $values;
     }
-
-
-
-    /**
-     * retourne un tableau d'information d'un project
-     * - nom du projet
-     * - environnement demandé
-     * - branche git actuelle
-     * @param unknown $envId
-     * @return Ambigous <string, unknown>
-     */
-    /*
-    public function getCurrentSourceFromEnvId($envId, $requestTag = false) {
-
-        $data = $this->projectDao->read((int) $envId);
-
-        log_message("info", "getBranchOrTagList returns:".print_r($data, true));
-
-        $branch = $data->getPath() == ""
-            ? lang("deploy")["notdeployed"]
-            : $this->getCurrentSourceDetails($data, $requestTag);
-
-        $values = array(
-            "project" 		=> $data->getName(),
-            "environment" 	=> $data->getEnvironment(),
-            "branch" 		=> $branch
-        );
-
-        return $values;
-    }
-    */
 
     /**
      * Modification de la source (branche/tag) d'un projet

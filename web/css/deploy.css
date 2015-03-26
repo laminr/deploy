@@ -40,6 +40,9 @@
 #deploy-main #new-tag-form label {
   font-size: 1.7em;
 }
+#deploy-main #new-tag {
+  margin-top: 38px;
+}
 #deploy-main .control {
   height: 34px;
   padding: 6px 12px;

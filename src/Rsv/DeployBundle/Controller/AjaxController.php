@@ -74,6 +74,8 @@ class AjaxController extends Controller
         $cmd = new CommandManager(AjaxController::$logger, $project);
 
         $data = $cmd->getCurrentSourceDetails($envId, false);
+
+        if ($data == "") $data = $this->get('translator')->trans('rsv3.deploy.notdeployed');
         $data = str_replace("\n", "", $data);
 
         $response = new JsonResponse();
@@ -189,7 +191,6 @@ class AjaxController extends Controller
         if ($target != "") {
             $project = new ProjectManager($this->getDoctrine()->getManager());
             $cmd = new CommandManager(AjaxController::$logger, $project);
-
             $data = $cmd->doChangeSource($envId, $target);
         }
 
@@ -243,7 +244,33 @@ class AjaxController extends Controller
         $response = new JsonResponse();
         return $response->setData( $data );
 	}
-	
+
+    /**
+     * Effectue une mise à jour de la branche actuelle d'un projet
+     *
+     * @param string $envId
+     * @param string $current
+     * @return message
+    s* @Route("/tag/last/{envId}" , name="_ajax_tag_last")
+     */
+    public function getLastTagAction($envId = 0) {
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = $this->get("project.service")->getProject($envId);
+        $tag = $project->getTag();
+
+        $data = array(
+            "g" => (int)substr($tag, 1,1),
+            "r" => (int)substr($tag, 3,1),
+            "c" => (int)substr($tag, 5,1)
+        );
+
+        $response = new JsonResponse();
+        return $response->setData( $data );
+    }
+
 	/**
 	 * Récupération de la liste des branches ou Tags pour un projet
 	 * 

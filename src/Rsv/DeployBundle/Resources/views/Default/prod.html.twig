@@ -9,18 +9,31 @@
             <select class="select-branch col-sm-8 control">
                 <option ng-repeat="tag in tagList" value="[[tag]]">[[tag]]</option>
             </select>
-            <button class="btn-info col-sm-4 control" id="">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+            <div class="col-sm-4">
+                <button class="btn btn-danger" id="">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+            </div>
         </div>
     </form>
 
     <div class="col-md-8 col-md-offset-2 title no-margin-bottom text-right">{% trans %}rsv3.deploy.newTag{% endtrans %}</div>
-    <form id="new-tag-form" action="" class="forms forms-inline col-md-8 col-md-offset-2">
+    <form id="new-tag-form" action="" class="forms forms-inline col-md-8">
         <div class="row">
-            <label for="input-tag-g" class="col-sm-3">{% trans %}rsv3.deploy.tagLabel{% endtrans %}</label>
-            <input type="text" class="col-sm-2 control" id="input-tag-g" value="" placeholder="G" required="required">
-            <input type="text" class="col-sm-2 control" id="input-tag-r" value="" placeholder="R" required="required">
-            <input type="text" class="col-sm-2 control" id="input-tag-c" value="" placeholder="C" required="required">
-            <button class="btn-info col-sm-3 control" id="new-tag">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
+            <label>{% trans %}rsv3.deploy.tagLabel{% endtrans %}</label>
+            <label ng-bind="tagTarget.g"></label>
+            <label ng-bind="tagTarget.r"></label>
+            <label ng-bind="tagTarget.c"></label>
+        </div>
+        <div class="row">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-default">{% trans %}rsv3.tag.g{% endtrans %}</button>
+                <button type="button" class="btn btn-default">{% trans %}rsv3.tag.r{% endtrans %}</button>
+                <button type="button" class="btn btn-default">{% trans %}rsv3.tag.c{% endtrans %}</button>
+            </div>
         </div>
     </form>
+    <div class="col-md-4">
+        <button class="btn btn-danger" id="new-tag">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
+    </div>
 </div>
+
+

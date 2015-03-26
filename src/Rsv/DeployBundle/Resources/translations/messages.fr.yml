@@ -12,7 +12,7 @@ rsv3:
         newTag: "Nouveau"
         activTag: "Activer un Tag"
         tag: "Tag"
-        tagLabel: "TAG-"
+        tagLabel: "TAG - "
         currentBranch:  "Branche"
         currentTag: "Tag actif"
         notdeployed: "Non déployé"
@@ -31,3 +31,8 @@ rsv3:
 
     project:
         selectOne: Sélectionner un projet
+
+    tag:
+        g: Majeur
+        r: Révision
+        c: Correction

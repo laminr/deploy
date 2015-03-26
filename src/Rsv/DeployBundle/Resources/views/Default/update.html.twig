@@ -18,8 +18,8 @@
 <div class="row line">
     <div class="col-md-12 title">{% trans %}rsv3.deploy.changeBranch{% endtrans %}</div>
     <form action="" class="forms forms-inline col-md-8 col-lg-12" disabled="disabled">
-        <select class="select-branch col-sm-8 control">
-            <option ng-repeat="branch in branchList" value="[[branch | trim]]" ng-selected="[[current==branch]]" ng-model="target">[[branch]]</option>
+        <select class="select-branch col-sm-8 control" ng-model="target">
+            <option ng-repeat="branch in branchList" value="[[branch | trim]]">[[branch]]</option>
         </select>
         <button class="btn-info col-sm-4 control" id="{{ currentActive }}" ng-click="changeSource()">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
     </form>

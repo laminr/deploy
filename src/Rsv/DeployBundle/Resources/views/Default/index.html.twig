@@ -81,10 +81,9 @@
                 envId   : "{{ path('_ajax_get_id') }}",
                 fetch   : "{{ path('_ajax_fetch_data') }}",
                 update  : "{{ path('_ajax_update_data') }}",
-                change  : "{{ path('_ajax_change_source') }}"
+                change  : "{{ path('_ajax_change_source') }}",
+                tagLast : "{{ path('_ajax_tag_last') }}"
             }
         };
-
-        //var projects = [ {% for project in data.projects %}{ "id" : {{ project.id }},  "name" : "{{ project.name }}" }, {% endfor %} ];
     </script>
 {% endblock %}
