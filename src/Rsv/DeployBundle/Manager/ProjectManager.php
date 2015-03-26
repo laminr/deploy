@@ -2,6 +2,7 @@
 
 namespace Rsv\DeployBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Rsv\DeployBundle\Manager\BaseManager;
 use Rsv\DeployBundle\Entity\Project;
@@ -10,7 +11,7 @@ class ProjectManager extends BaseManager
 {
     protected $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(ObjectManager $em)
     {
         $this->em = $em;
     }

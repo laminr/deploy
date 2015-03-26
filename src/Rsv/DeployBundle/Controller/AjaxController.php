@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Rsv\DeployBundle\Manager\CommandManager;
 use Rsv\DeployBundle\Manager\ProjectManager;
+
+use Doctrine\Common\Persistence\ObjectManager;
 use Rsv\DeployBundle\Entity\Project;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -68,7 +70,7 @@ class AjaxController extends Controller
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getEntityManager());
+        $project = new ProjectManager($this->getDoctrine()->getManager());
         $cmd = new CommandManager(AjaxController::$logger, $project);
 
         $data = $cmd->getCurrentSourceDetails($envId, false);
@@ -111,22 +113,23 @@ class AjaxController extends Controller
 	 * - nom du projet
 	 * - environnement demandé
 	 * - <strong>Tag git actuelle</strong>
-	 * 
+	 * @return current tag
 	 * @param number $envId    
      * @Route("/tag" , name="_ajax_current_tag")
 	 */
 	public function currentTagAction($envId = "") {
-		$values = array (
-				"branch" => "?" 
-		);
-		
-		// $envId = (is_integer($envId)) ? (int) $envId : 0;
-		
-		if ($envId != 0) {
-			$values = $this->deployDao->getCurrentSourceFromEnvId ( $envId, true );
-		}
-		
-		echo json_encode ( responseSuccess ( $values ) );
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = new ProjectManager($this->getDoctrine()->getManager());
+        $cmd = new CommandManager(AjaxController::$logger, $project);
+
+        $data = $cmd->getCurrentSourceDetails($envId, true);
+        $data = str_replace("\n", "", $data);
+
+        $response = new JsonResponse();
+        return $response->setData( array("tag" => $data));
 	}
 	
 	/**
@@ -176,9 +179,10 @@ class AjaxController extends Controller
 	 *        	: le nom de la branche/tag à mettre en place
 	 */
 	public function changeSourceAction($envId = "", $label = "") {
+
 		$response = "";
 		log_message ( "info", "changeSourceJSON envId=" . $envId . " label=" . $label );
-		
+
 		if ($envId == "" || $label == "") {
 			$message = "Erreur de paramètre d'appel : envId = $envId ; branche/tag = $label";
 			$response = responseError ( $message );
@@ -198,46 +202,46 @@ class AjaxController extends Controller
 	 * 
 	 * @param string $envId        	
 	 * @return Json String : Messages retour du serveur
+     *
+     * @Route("/data/fetch/{envId}" , name="_ajax_fetch_data")
 	 */
-	public function fetchDataAction($envId = "") {
-		$response = "";
-		log_message ( "info", "fetchDataJSON envId=" . $envId );
-		
-		if ($envId == "") {
-			$message = "Erreur de paramètre d'appel : envId = $envId";
-			$response = responseError ( $message );
-			log_message ( "info", "changeSourceJSON Error ==> $message" );
-		} else {
-			$returns = $this->deployDao->doFetchData ( $envId );
-			$response = responseSuccess ( $returns );
-			log_message ( "info", "changeSourceJSON Success ==> " . print_r ( $response, true ) );
-		}
-		
-		echo json_encode ( $response );
+	public function fetchDataAction($envId = 0) {
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = new ProjectManager($this->getDoctrine()->getManager());
+        $cmd = new CommandManager(AjaxController::$logger, $project);
+
+        $data = $cmd->doFetchData($envId);
+
+        $response = new JsonResponse();
+        return $response->setData( $data );
 	}
 	
 	/**
 	 * Effectue une mise à jour de la branche actuelle d'un projet
 	 * 
 	 * @param string $envId        	
-	 * @param string $current        	
+	 * @param string $current
+     * @return message
+     s* @Route("/data/update/{envId}/{current}" , name="_ajax_update_data")
 	 */
-	public function updateSourceAction($envId, $current = "") {
-		$response = "";
-		log_message ( "info", "updateSourceJSON envId=" . $envId . " current=" . $current );
-		
-		if ($envId == "") {
-			$message = "Erreur de paramètre d'appel : envId = $envId ; branche/tag = $current";
-			$response = responseError ( $message );
-			log_message ( "info", "updateSourceJSON Error ==> $message" );
-		} else {
-			$current = urldecode ( $current );
-			$returns = $this->deployDao->doUpdateSource ( $envId, $current );
-			$response = responseSuccess ( $returns );
-			log_message ( "info", "updateSourceJSON Success ==> " . print_r ( $response, true ) );
-		}
-		
-		echo json_encode ( $response );
+	public function updateSourceAction($envId = 0, $current = 0) {
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = new ProjectManager($this->getDoctrine()->getManager());
+        $cmd = new CommandManager(AjaxController::$logger, $project);
+
+        $data = $cmd->doUpdateSource($envId, $current);
+
+        foreach($data as &$d) {
+            $d = str_replace("\n", "", $d);
+        }
+
+        $response = new JsonResponse();
+        return $response->setData( $data );
 	}
 	
 	/**

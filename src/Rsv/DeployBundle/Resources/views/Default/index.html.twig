@@ -26,7 +26,7 @@
 
         <div class="row">
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-sm-6">
                 <div class="col-sm-12">
                     <h3>{% trans %}rsv3.deploy.project{% endtrans %}</h3>
                     {% for project in data.projects %}
@@ -43,22 +43,24 @@
             </div>
 
             <!-- COLONE 2 -->
-            <div id="project" class="col-lg-4 col-md-6" ng-show="selected">
-                <div class="row" id="qualif" ng-show="server.qualif.show">
+            <div id="project" class="col-lg-4 col-sm-6" ng-show="selected">
+                <div class="_row" id="qualif" ng-show="server.qualif.show">
                     {{ include('RsvDeployBundle:Default:update.html.twig' , {'currentServer': 'currentQualif', 'currentActive' : 'activ-qualif', 'currentUpdate' : 'update-qualif'}) }}
                 </div>
-                <div class="row" id="preprod" ng-show="server.preprod.show">
+                <div class="_row" id="preprod" ng-show="server.preprod.show">
                     {{ include('RsvDeployBundle:Default:update.html.twig' , {'currentServer': 'currentPreProd', 'currentActive' : 'activ-preprod', 'currentUpdate' : 'update-preprod'}) }}
                 </div>
                 <!-- PROD -->
-                <div class="row" id="prod" ng-show="server.prod.show">
+                <div class="_row" id="prod" ng-show="server.prod.show">
                     {{ include('RsvDeployBundle:Default:prod.html.twig') }}
                 </div>
 
             </div> <!-- fin colonne 2 -->
 
             <div class="col-lg-5 hidden-md" ng-show="selected">
-                <code class="col-xs-12" id="bash-return"></code>
+                <code class="col-xs-12" id="bash-return">
+                    <div ng-repeat="msg in fetchMsg">[[msg]]</div>
+                </code>
             </div>
         </div>
 
@@ -72,7 +74,13 @@
     <script type="text/javascript">
 
         var params = {
-            urls : { branchCurrent : "{{ path('_ajax_current_branch') }}", branchAll : "{{ path('_ajax_all_branches') }}", envId : "{{ path('_ajax_get_id') }}" }
+            urls : {
+                branchCurrent : "{{ path('_ajax_current_branch') }}",
+                branchAll : "{{ path('_ajax_all_branches') }}",
+                envId : "{{ path('_ajax_get_id') }}",
+                fetch : "{{ path('_ajax_fetch_data') }}",
+                update : "{{ path('_ajax_update_data') }}"
+            }
         };
 
         //var projects = [ {% for project in data.projects %}{ "id" : {{ project.id }},  "name" : "{{ project.name }}" }, {% endfor %} ];

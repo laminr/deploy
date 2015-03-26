@@ -11,7 +11,7 @@
         <span ng-bind="current" class="pull-right branchName"></span>
     </div>
     <form class="col-xs-12">
-        <button class="col-xs-12 btn btn-success" id="{{ currentUpdate }}">{% trans %}rsv3.deploy.update{% endtrans %}</button>
+        <button class="col-xs-12 btn btn-success" ng-click="updateMe()" id="{{ currentUpdate }}">{% trans %}rsv3.deploy.update{% endtrans %}</button>
     </form>
 </div>
 

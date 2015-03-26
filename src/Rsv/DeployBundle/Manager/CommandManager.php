@@ -156,15 +156,13 @@ class CommandManager {
      */
     public function doUpdateSource($envId = "", $branch = "") {
 
-        $values = array();
-        $project = $this->projectDao->read((int) $envId);
+        $project = $this->projects->getProject($envId);
 
         $path = $project->getPath();
+        $command = 'cd '.$path."; ".GitBusiness::CMD_UPDATE_SOURCE.$branch;
 
-        $command = 'cd '.$path."; ".Deploy_GitBo::CMD_UPDATE_SOURCE.$branch;
-
-        $values = $this->ssh->execute($project, $command);
-        log_message("info", "doUpdateSource returns:".print_r($values, true));
+        $ssh = new SshBusiness($this->logger);
+        $values = $ssh->execute($project, $command);
 
         return sizeof($values) > 0 ? $values : "";
     }
@@ -205,16 +203,13 @@ class CommandManager {
      * @return Array String : Messages retour du serveur
      */
     public function doFetchData($envId = 0) {
-        $values = array();
-        $project = $this->projectDao->read((int) $envId);
 
+        $project = $this->projects->getProject($envId);
         $path = $project->getPath();
 
         // la commande Git
-        $command = 'cd '.$path."; ".Deploy_GitBo::CMD_FETCH_DATA ;
-
+        $command = 'cd '.$path."; ".GitBusiness::CMD_FETCH_DATA ;
         $values = $this->ssh->execute($project, $command);
-        log_message("info", "doFetchData returns:".print_r($values, true));
 
         return sizeof($values) > 0 ? $values : "";
     }

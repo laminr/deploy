@@ -8,7 +8,7 @@ var deployApp = angular
 
 deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) {
 
-    //$scope.projects = projects;
+    $scope.msg = { loading: "<loading>", updating: "UPDATING" } ;
     $scope.selected = 0;
 
     $scope.server = {
@@ -18,10 +18,12 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     };
 
     $scope.currentEnv = $scope.server.qualif;
+    $scope.currentEnvId = 0;
     $scope.branchList = ["loading"];
     $scope.tagList = ["loading"];
-    $scope.current = "<loading>";
+    $scope.current = $scope.msg.loading;
     $scope.envIds = [];
+    $scope.fetchMsg = [];
 
     $scope.showServer = function (server) {
 
@@ -47,7 +49,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     $scope.select = function(id) {
 
         $scope.selected = id;
-        $scope.branchList = ["<LOADING>"];
+        $scope.branchList = [$scope.msg.updating];
 
         var urlAll = params.urls.branchAll+"/"+id;
         $http.get(urlAll).success(function(data) {
@@ -72,18 +74,17 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
     $scope.getCurrentBranch = function() {
 
-        $scope.current = "<LOADING>";
+        $scope.current = $scope.msg.loading;
 
-        var envIdToget = 0;
         for(var index in $scope.envIds) {
             var env = $scope.envIds[index];
             if (env.env.toLowerCase() == $scope.currentEnv.name.toLowerCase()) {
-                envIdToget = env.id;
+                $scope.currentEnvId = env.id;
                 break;
             }
         }
 
-        var url = params.urls.branchCurrent+"/"+envIdToget;
+        var url = params.urls.branchCurrent+"/"+$scope.currentEnvId;
         $http.get(url).success(function(data) {
             $scope.current = data.branch;
         }).error(
@@ -92,4 +93,21 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             }
         );
     }
+
+    $scope.updateMe = function() {
+
+        $scope.fetchMsg = [$scope.msg.loading];
+        //$scope.current = $scope.msg.updating;
+
+        var url = params.urls.update+"/"+$scope.currentEnvId+"/"+$scope.current;
+        $http.get(url).success(function(data) {
+            $scope.fetchMsg = data;
+        }).error(
+            function() {
+                alert("Oops! Env");
+            }
+        );
+    }
+
+
 }]);
