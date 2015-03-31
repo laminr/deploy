@@ -1,39 +1,47 @@
 {{ include('RsvDeployBundle:Default:update.html.twig' , {'currentServer': 'currentProd', 'currentActive' : 'activ-prod', 'currentUpdate' : 'update-prod'}) }}
 
 <div class="row">
+
     <div class="col-md-12 title">{% trans %}rsv3.deploy.tag{% endtrans %}</div>
-
-    <div class="col-md-8 col-md-offset-2 title no-margin-bottom text-right">{% trans %}rsv3.deploy.changeTag{% endtrans %}</div>
-    <form id="new-tag-form" action="" class="forms forms-inline col-md-8 col-md-offset-2">
-        <div class="row">
-            <select class="select-branch col-sm-8 control">
-                <option ng-repeat="tag in tagList" value="[[tag]]">[[tag]]</option>
-            </select>
-            <div class="col-sm-4">
-                <button class="btn btn-danger" id="">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+    <div class="col-md-12">
+        <form id="tag-change-form" action="" class="forms forms-inline">
+            <div>
+                <select class="select-branch col-sm-9 control">
+                    <option ng-repeat="tag in tagList" value="[[tag]]">[[tag]]</option>
+                </select>
+                <div class="col-sm-3">
+                    <button class="btn btn-default" id="">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+                </div>
             </div>
-        </div>
-    </form>
-
-    <div class="col-md-8 col-md-offset-2 title no-margin-bottom text-right">{% trans %}rsv3.deploy.newTag{% endtrans %}</div>
-    <form id="new-tag-form" action="" class="forms forms-inline col-md-8">
-        <div class="row">
-            <label>{% trans %}rsv3.deploy.tagLabel{% endtrans %}</label>
-            <label ng-bind="tagTarget.g"></label>
-            <label ng-bind="tagTarget.r"></label>
-            <label ng-bind="tagTarget.c"></label>
-        </div>
-        <div class="row">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-default">{% trans %}rsv3.tag.g{% endtrans %}</button>
-                <button type="button" class="btn btn-default">{% trans %}rsv3.tag.r{% endtrans %}</button>
-                <button type="button" class="btn btn-default">{% trans %}rsv3.tag.c{% endtrans %}</button>
-            </div>
-        </div>
-    </form>
-    <div class="col-md-4">
-        <button class="btn btn-danger" id="new-tag">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
+        </form>
     </div>
+
+    <div class="col-sm-12">
+        <form id="new-tag-form" action="" class="forms forms-inline">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>{% trans %}rsv3.deploy.tagLabel{% endtrans %}</label>
+                    <label ng-bind="tagTarget.g"></label>
+                    <label ng-bind="tagTarget.r"></label>
+                    <label ng-bind="tagTarget.c"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-default" ng-click="tagTargetType('g')">{% trans %}rsv3.tag.g{% endtrans %}</button>
+                        <button type="button" class="btn btn-default" ng-click="tagTargetType('r')">{% trans %}rsv3.tag.r{% endtrans %}</button>
+                        <button type="button" class="btn btn-default" ng-click="tagTargetType('c')">{% trans %}rsv3.tag.c{% endtrans %}</button>
+                        <button type="button" class="btn btn-default" ng-click="tagTargetType('x')">{% trans %}rsv3.tag.reset{% endtrans %}</button>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-default" id="new-tag">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
 </div>
 
 

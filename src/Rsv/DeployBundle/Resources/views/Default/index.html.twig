@@ -6,6 +6,7 @@
 
 {% block stylesheets %}
     <link href="{{ asset('css/deploy.css') }}" rel="stylesheet" media="screen" />
+    <link href="{{ asset('css/spinner.css') }}" rel="stylesheet" media="screen" />
     <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dancing+Script' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Stint+Ultra+Condensed' rel='stylesheet' type='text/css'>
@@ -14,7 +15,7 @@
 
 {% block body %}
 <div class="container">
-    
+
     <!-- LISTE BRANCHE -->
     <div class="row">
 
@@ -44,6 +45,7 @@
 
             <!-- COLONE 2 -->
             <div id="project" class="col-lg-4 col-sm-6" ng-show="selected">
+                {{ include('RsvDeployBundle:Default:spinner.html.twig') }}
                 <div class="_row" id="qualif" ng-show="server.qualif.show">
                     {{ include('RsvDeployBundle:Default:update.html.twig' , {'currentServer': 'currentQualif', 'currentActive' : 'activ-qualif', 'currentUpdate' : 'update-qualif'}) }}
                 </div>
@@ -54,7 +56,6 @@
                 <div class="_row" id="prod" ng-show="server.prod.show">
                     {{ include('RsvDeployBundle:Default:prod.html.twig') }}
                 </div>
-
             </div> <!-- fin colonne 2 -->
 
             <div class="col-lg-5 hidden-md" ng-show="selected">
@@ -82,7 +83,9 @@
                 fetch   : "{{ path('_ajax_fetch_data') }}",
                 update  : "{{ path('_ajax_update_data') }}",
                 change  : "{{ path('_ajax_change_source') }}",
-                tagLast : "{{ path('_ajax_tag_last') }}"
+                tagLast : "{{ path('_ajax_tag_last') }}",
+                tagNew  : "{{ path('_ajax_tag_create') }}",
+                tagAll  : "{{ path('_ajax_all_tags') }}"
             }
         };
     </script>

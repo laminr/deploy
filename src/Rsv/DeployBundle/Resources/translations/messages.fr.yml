@@ -36,3 +36,4 @@ rsv3:
         g: Majeur
         r: Révision
         c: Correction
+        reset: x

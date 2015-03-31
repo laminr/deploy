@@ -8,11 +8,22 @@
   margin: 0;
 }
 #deploy-main .navbar .navbar-brand {
-  padding: 0;
+  padding: 3px 10px 0 15px;
 }
 #deploy-main .navbar .prod > a {
   background-color: #A81818;
   color: #fff;
+}
+#deploy-main #project {
+  position: relative;
+}
+#deploy-main #project .spinner {
+  z-index: 1;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
 }
 #deploy-main #selectOne {
   margin-top: 50px;
@@ -37,11 +48,11 @@
 #deploy-main .projectActive {
   background-color: #abc;
 }
+#deploy-main #new-tag-form {
+  margin-top: 20px;
+}
 #deploy-main #new-tag-form label {
   font-size: 1.7em;
-}
-#deploy-main #new-tag {
-  margin-top: 38px;
 }
 #deploy-main .control {
   height: 34px;

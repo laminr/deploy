@@ -53,6 +53,31 @@ class AjaxController extends Controller
         return $response->setData( $data);
     }
 
+    /**
+     * retour JSON de la liste des branches existante
+     *
+     * @param String $projectName
+     * @param number $envId
+     * @return json
+     *
+     * @Route("/tags/{projectId}" , name="_ajax_all_tags")
+     * @Method("GET")
+     * @Template()
+     */
+    public function allTagsAction($projectId = 0) {
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = new ProjectManager($this->getDoctrine()->getEntityManager());
+        $cmd = new CommandManager(AjaxController::$logger, $project);
+
+        $data = $cmd->getBranchOrTagList($projectId, true);
+
+        $response = new JsonResponse();
+        return $response->setData( $data);
+    }
+
 	/**
 	 * retour d'information de branche JSON pour un projet
 	 * - nom du projet
@@ -141,29 +166,26 @@ class AjaxController extends Controller
 	 *        	: environnement et projet demandé
 	 * @param string $newTag
 	 *        	: nom du Tag
-     * @Route("/tag/create" , name="_ajax_tag_create")
+     * @Route("/tag/create/{envId}/{tag}" , name="_ajax_tag_create")
 	 */
-	public function createTagAction($envId = "", $newTag = "") {
-		$response = "";
-		
-		log_message ( "info", "createTagJSON envId=" . $envId . " new Tag=" . $newTag );
-		
-		if ($envId == "" || $newTag == "") {
-			$message = "Erreur de paramètre d'appel : envId = $envId ; Tag = $newTag";
-			$response = responseError ( $message );
-			log_message ( "createTagJSON Error ==> $message" );
-		} else {
-			$label = urldecode ( $newTag );
-			$returns = $this->deployDao->doCreateTag ( $envId, $newTag );
-			$response = responseSuccess ( $returns );
-			log_message ( "info", "createTagJSON Success ==> " . print_r ( $response, true ) );
-		}
-		
-		echo json_encode ( $response );
+	public function createTagAction($envId = 0, $tag = "") {
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = new ProjectManager($this->getDoctrine()->getManager());
+        $cmd = new CommandManager(AjaxController::$logger, $project);
+
+        $data = $cmd->getCurrentSourceDetails($envId, true);
+        $data = str_replace("\n", "", $data);
+
+        $response = new JsonResponse();
+        return $response->setData( array("tag" => $data));
+
 	}
 	
 	/**
-	 * retour JSON de la liste des branches existante
+	 * retour JSON de la liste des tag existante
 	 * 
 	 * @param unknown $projectName        	
 	 */
@@ -171,6 +193,22 @@ class AjaxController extends Controller
 		$tags = $this->getGitNames ( $projectName, true );
 		echo json_encode ( responseSuccess ( $tags ) );
 	}
+
+
+    /**
+     * Récupération de la liste des branches ou Tags pour un projet
+     *
+     * @param string $projectName
+     *        	: nom du projet
+     * @param boolean $requestTag
+     *        	: demande les Tags (sinon branches)
+     * @return tableau de string
+     */
+    private function getGitNamesAction($projectName, $requestTag) {
+        $name = $projectName == "" ? $this->projects [0] [Deploy_ProjectBo::COL_NAME] : urldecode ( $projectName );
+
+        return $this->deployDao->getBranchOrTagList ( $name, $requestTag );
+    }
 	
 	/**
 	 * Changement de branche/tag pour un projet et environnement
@@ -259,31 +297,16 @@ class AjaxController extends Controller
             AjaxController::$logger = $this->get('logger');
 
         $project = $this->get("project.service")->getProject($envId);
-        $tag = $project->getTag();
+        $tag = explode("|", $project->getTag());
 
         $data = array(
-            "g" => (int)substr($tag, 1,1),
-            "r" => (int)substr($tag, 3,1),
-            "c" => (int)substr($tag, 5,1)
+            "g" => (int)$tag[0],
+            "r" => (int)$tag[1],
+            "c" => (int)$tag[2]
         );
 
         $response = new JsonResponse();
         return $response->setData( $data );
     }
-
-	/**
-	 * Récupération de la liste des branches ou Tags pour un projet
-	 * 
-	 * @param string $projectName
-	 *        	: nom du projet
-	 * @param boolean $requestTag
-	 *        	: demande les Tags (sinon branches)
-	 * @return tableau de string
-	 */
-	private function getGitNamesAction($projectName, $requestTag) {
-		$name = $projectName == "" ? $this->projects [0] [Deploy_ProjectBo::COL_NAME] : urldecode ( $projectName );
-		
-		return $this->deployDao->getBranchOrTagList ( $name, $requestTag );
-	}
     
 }

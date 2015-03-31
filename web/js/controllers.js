@@ -17,13 +17,14 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         prod: {  name : "prod", show : false}
     };
 
+    $scope.updating = 0;
     $scope.lastTag = { g:0, r:0, c:0 };
     $scope.tagTarget = { g: "G0", r: "R0", c: "C0" };
 
     $scope.currentEnv = $scope.server.qualif;
     $scope.currentEnvId = 0;
-    $scope.branchList = ["loading"];
-    $scope.tagList = ["loading"];
+    $scope.branchList = [$scope.msg.loading];
+    $scope.tagList = [$scope.msg.loading];
     $scope.current = $scope.msg.loading;
     $scope.envIds = [];
     $scope.fetchMsg = [];
@@ -52,12 +53,14 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     };
 
     $scope.select = function(id) {
-
+        var url = "";
+        // recupération de toutes les branches existantes
         $scope.selected = id;
         $scope.branchList = [$scope.msg.updating];
 
-        var urlAll = params.urls.branchAll+"/"+id;
-        $http.get(urlAll).success(function(data) {
+        // all branch names
+        url = params.urls.branchAll+"/"+id;
+        $http.get(url).success(function(data) {
             $scope.branchList = data;
         }).error(
             function() {
@@ -65,9 +68,19 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             }
         );
 
+        // all tags names
+        url = params.urls.tagAll+"/"+id;
+        $http.get(url).success(function(data) {
+            $scope.tagList = data;
+        }).error(
+            function() {
+                alert("Oops! Branch");
+            }
+        );
+
         // get Env Ids
-        var urlCurrent = params.urls.envId+"/"+id;
-        $http.get(urlCurrent).success(function(data) {
+        url = params.urls.envId+"/"+id;
+        $http.get(url).success(function(data) {
             $scope.envIds = data;
             $scope.getCurrentBranch();
         }).error(
@@ -79,12 +92,14 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
     $scope.getCurrentBranch = function() {
 
+        $scope.updating = 1;
         $scope.current = $scope.msg.loading;
 
         for(var index in $scope.envIds) {
             var env = $scope.envIds[index];
             if (env.env.toLowerCase() == $scope.currentEnv.name.toLowerCase()) {
                 $scope.currentEnvId = env.id;
+                console.log("current:"+$scope.currentEnvId);
                 break;
             }
         }
@@ -93,22 +108,27 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         $http.get(url).success(function(data) {
             $scope.current = data.branch;
             $scope.target = data.branch;
+            $scope.updating = 0;
         }).error(
             function() {
+                $scope.updating = 0;
                 alert("Oops! Env");
             }
         );
     };
+
     $scope.updateMe = function() {
 
+        $scope.updating = 1;
         $scope.fetchMsg = [$scope.msg.loading];
-        //$scope.current = $scope.msg.updating;
 
         var url = params.urls.update+"/"+$scope.currentEnvId+"/"+$scope.current;
         $http.get(url).success(function(data) {
             $scope.fetchMsg = data;
+            $scope.updating = 0;
         }).error(
             function() {
+                $scope.updating = 0;
                 alert("Oops! Env");
             }
         );
@@ -118,6 +138,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
         if ($scope.target != "") {
 
+            $scope.updating = 1;
             $scope.fetchMsg = [$scope.msg.loading];
 
             var url = params.urls.change+"/"+$scope.currentEnvId+"/"+$scope.target;
@@ -127,14 +148,64 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             }).error(
                 function() {
                     alert("Oops! Env");
+                    $scope.updating = 0;
                 }
             );
         }
-    }
+    };
 
     $scope.getLastTag = function() {
 
+        $scope.updating = 1;
+
         var url = params.urls.tagLast+"/"+$scope.currentEnvId;
+        $http.get(url).success(function(data) {
+            $scope.lastTag = data;
+            updateTargetTag(data.g, data.r, data.c);
+            $scope.updating = 0;
+        }).error(
+            function() {
+                alert("Oops! Env");
+                $scope.updating = 0;
+            }
+        );
+    };
+
+    $scope.tagTargetType = function(target) {
+        $scope.updating = 1;
+        switch (target) {
+            case "g":
+                updateTargetTag((parseInt($scope.lastTag.g)+1), 0,0);
+                break;
+            case "r":
+                updateTargetTag(
+                    $scope.lastTag.g,
+                    (parseInt($scope.lastTag.r)+1),
+                    0
+                );
+                break;
+            case "c":
+                updateTargetTag(
+                    $scope.lastTag.g,
+                    $scope.lastTag.r,
+                    (parseInt($scope.lastTag.c)+1)
+                );
+                break;
+            case "x":
+                updateTargetTag(
+                    $scope.lastTag.g,
+                    $scope.lastTag.r,
+                    $scope.lastTag.c
+                );
+                break;
+        }
+
+        $scope.updating = 0;
+    }
+
+    $scope.newTag = function() {
+
+        var url = params.urls.tagNew+"/"+$scope.currentEnvId;
         $http.get(url).success(function(data) {
             $scope.lastTag = data;
         }).error(
@@ -142,6 +213,12 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 alert("Oops! Env");
             }
         );
+    }
+
+    var updateTargetTag = function(g,r,c) {
+        $scope.tagTarget.g = "G"+g;
+        $scope.tagTarget.r = "R"+r;
+        $scope.tagTarget.c = "C"+c;
     }
 
 }]);

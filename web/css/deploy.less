@@ -12,7 +12,7 @@
     margin: 0;
 
     .navbar-brand {
-      padding: 0;
+      padding: 3px 10px 0 15px;
     }
 
     .prod {
@@ -20,6 +20,19 @@
         background-color: #A81818;
         color: #fff;
       }
+    }
+  }
+
+  #project {
+    position: relative;
+
+    .spinner {
+      z-index: 1;
+      position: absolute;
+      top: 10px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
     }
   }
 
@@ -59,13 +72,10 @@
   }
 
   #new-tag-form {
+    margin-top: 20px;
     label {
       font-size: 1.7em;
     }
-  }
-
-  #new-tag {
-    margin-top: 38px;
   }
 
   .control {
