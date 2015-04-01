@@ -21,6 +21,12 @@
         <select class="select-branch col-sm-8 control" ng-model="target">
             <option ng-repeat="branch in branchList" value="[[branch | trim]]">[[branch]]</option>
         </select>
-        <button class="btn-info col-sm-4 control" id="{{ currentActive }}" ng-click="changeSource()">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+        <button class="btn-info col-sm-4 control"
+                id="{{ currentActive }}"
+                ng-click="changeSource(true)"
+                ng-show="target != current"
+                >
+            {% trans %}rsv3.deploy.activate{% endtrans %}
+        </button>
     </form>
 </div>

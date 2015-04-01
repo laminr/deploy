@@ -18,57 +18,59 @@ use Psr\Log\LoggerInterface;
 class CommandManager {
 
     private $logger;
-    private $projects;
 
-    public function __construct(LoggerInterface $logger, ProjectManager $projects) {
+    public function __construct(LoggerInterface $logger) {
         $this->logger = $logger;
-        $this->projects = $projects;
     }
 
-    public function getBranchOrTagList( $projectId = 0, $requestTag = false) {
+    /**
+     * Recupération d'une liste des branches ou tags
+     * @param null $project
+     * @param bool $requestTag
+     * @return array
+     */
+    public function getBranchOrTagList( $project = NULL, $requestTag = false) {
+
+        if ($project == NULL) {
+            return "";
+        }
+
+        $path = $project->getPath();
+        $who = $requestTag
+            ? GitBusiness::CMD_TAG_ALL
+            : GitBusiness::CMD_BRANCH_ALL;
+
+        $command = 'cd '.$path."; ".$who;
+
+        $ssh = new SshBusiness($this->logger);
 
         $values = array();
+        $values = $ssh->execute($project, $command);
 
-        if ($projectId != 0) {
+        $this->logger->info("getBranchOrTagList returns:".print_r($values, true));
 
-            $projects = $this->projects->getProject($projectId);
-
-            $path = $projects->getPath();
-            $who = $requestTag
-                ? GitBusiness::CMD_TAG_ALL
-                : GitBusiness::CMD_BRANCH_ALL;
-
-            $command = 'cd '.$path."; ".$who;
-
-            $ssh = new SshBusiness($this->logger);
-            $values = $ssh->execute($projects, $command);
-
-            $this->logger->info("getBranchOrTagList returns:".print_r($values, true));
-
-            // retrait de l'asterisque
-            foreach ($values as &$value) {
-                if (strpos($value, "*") !== false) {
-                    $value = trim(str_replace("*", "", $value));
-                }
+        // retrait de l'asterisque
+        foreach ($values as &$value) {
+            if (strpos($value, "*") !== false) {
+                $value = trim(str_replace("*", "", $value));
             }
         }
 
         return $values;
     }
 
-
     /**
-     * @param $oneProject
+     * @param null $project
      * @param bool $requestTag
      * @return string
      */
-    public function getCurrentSourceDetails($projectId = 0, $requestTag = false) {
+    public function getCurrentSourceDetails($project = NULL, $requestTag = false) {
 
-        $values = array();
+        if ($project == NULL) {
+            return "";
+        }
 
-        $projects = $this->projects->getProject($projectId);
-
-        $path = $projects->getPath();
+        $path = $project->getPath();
 
         if ($path == "")
             return $path;
@@ -80,35 +82,23 @@ class CommandManager {
         $command = "cd $path; $git";
 
         $ssh = new SshBusiness($this->logger);
-        $values = $ssh->execute($projects, $command);
+        $values = array();
+        $values = $ssh->execute($project, $command);
 
         return sizeof($values) > 0 ? $values[0] : "";
     }
 
     /**
-     * Recupération des environements pour un projet
-     * @param nom du projet
-     * @return array
-     */
-    public function getProjectEnv($projectName = "") {
-        $values = array();
-
-        if ($projectName != "") {
-            $values = $this->projectDao->getByProjectName($projectName);
-        }
-
-        return $values;
-    }
-
-    /**
      * Modification de la source (branche/tag) d'un projet
-     * @param string $envId : id de l'environnement et projet
+     * @param null $project
      * @param string $target : le nom de la branche / tag
      * @return tableau message ssh de retour
      */
-    public function doChangeSource($envId = 0, $target = "") {
+    public function doChangeSource($project = NULL, $target = "") {
 
-        $project = $this->projects->getProject($envId);
+        if ($project == NULL) {
+            return "";
+        }
 
         $path = $project->getPath();
 
@@ -126,9 +116,11 @@ class CommandManager {
      * @param string $branch : le nom de la branche
      * @return tableau message ssh de retour
      */
-    public function doUpdateSource($envId = "", $branch = "") {
+    public function doUpdateSource($project = NULL, $branch = "") {
 
-        $project = $this->projects->getProject($envId);
+        if ($project == NULL) {
+            return "";
+        }
 
         $path = $project->getPath();
         $command = 'cd '.$path."; ".GitBusiness::CMD_UPDATE_SOURCE.$branch;
@@ -141,14 +133,15 @@ class CommandManager {
 
     /**
      * Création d'un nouveau Tag d'un projet
-     * @param string $envId : id de l'environnement et projet
-     * @param string $label : le nom du tag
+     * @param null $project
+     * @param string $newTag
      * @return tableau message ssh de retour
      */
-    public function doCreateTag($envId = "", $newTag = "") {
+    public function doCreateTag($project = NULL, $newTag = "") {
 
-        $values = array();
-        $project = $this->projectDao->read((int) $envId);
+        if ($project == NULL) {
+            return "";
+        }
 
         $path = $project->getPath();
 
@@ -157,26 +150,31 @@ class CommandManager {
          * - Nom du Tag
          * - Date de la création
          */
-        $temp = str_replace("#name#", $newTag, Deploy_GitBo::CMD_TAG_NEW);
+        $temp = str_replace("#name#", $newTag, GitBusiness::CMD_TAG_NEW);
         $gitCmd = str_replace("#date#", date("d-m-Y H:i:s"), $temp);
 
         // la commande Git
         $command = 'cd '.$path."; ".$gitCmd ;
 
-        $values = $this->ssh->execute($project, $command);
-        log_message("info", "doCreateTag returns:".print_r($values, true));
+        $ssh = new SshBusiness($this->logger);
+
+        $values = array();
+        $values = $ssh->execute($project, $command);
 
         return sizeof($values) > 0 ? $values : "";
     }
 
     /**
      * Demande une mise à jour de source sur un serveur
-     * @param number $envId
+     * @param null $project
      * @return Array String : Messages retour du serveur
      */
-    public function doFetchData($envId = 0) {
+    public function doFetchData($project = NULL) {
 
-        $project = $this->projects->getProject($envId);
+        if ($project == NULL) {
+            return "";
+        }
+
         $path = $project->getPath();
 
         // la commande Git

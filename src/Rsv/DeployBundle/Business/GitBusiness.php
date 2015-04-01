@@ -45,7 +45,7 @@ class GitBusiness {
     const CMD_TAG_CURRENT 	= "git describe --always --tag";
 
     // nouveau Tag: création du tag avec Nom & Date, puis Push vers dépôt
-    const CMD_TAG_NEW 		= 'git tag -a #name# -m "création Tag CEA Front #date#"; git push origin --tags';
+    const CMD_TAG_NEW 		= 'git tag -a #name# -m "création Tag Rsv Front #date#"; git push origin --tags';
 
     // activation d'un Tag
     const CMD_TAG_ACTIV		= "git fetch origin; git checkout -f ";

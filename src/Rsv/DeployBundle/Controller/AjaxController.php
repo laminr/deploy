@@ -31,9 +31,11 @@ class AjaxController extends Controller
     /**
      * retour JSON de la liste des branches existante
      *
-     * @param String $projectName
-     * @param number $envId
+     * @param int $projectId
      * @return json
+     * @throws \Exception
+     * @internal param String $projectName
+     * @internal param number $envId
      *
      * @Route("/branches/{projectId}" , name="_ajax_all_branches")
      * @Method("GET")
@@ -44,10 +46,10 @@ class AjaxController extends Controller
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getEntityManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $project = $this->get("project.service")->getProject($projectId);
+        $cmd = new CommandManager(AjaxController::$logger);
 
-        $data = $cmd->getBranchOrTagList($projectId, false);
+        $data = $cmd->getBranchOrTagList($project, false);
 
         $response = new JsonResponse();
         return $response->setData( $data);
@@ -56,9 +58,11 @@ class AjaxController extends Controller
     /**
      * retour JSON de la liste des branches existante
      *
-     * @param String $projectName
-     * @param number $envId
+     * @param int $projectId
      * @return json
+     * @throws \Exception
+     * @internal param String $projectName
+     * @internal param number $envId
      *
      * @Route("/tags/{projectId}" , name="_ajax_tag_all")
      * @Method("GET")
@@ -69,36 +73,38 @@ class AjaxController extends Controller
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getEntityManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $cmd = new CommandManager(AjaxController::$logger);
 
-        $data = $cmd->getBranchOrTagList($projectId, true);
+        $project = $this->get("project.service")->getProject($projectId);
+        $data = $cmd->getBranchOrTagList($project, true);
 
         $response = new JsonResponse();
         return $response->setData( $data);
     }
 
-	/**
-	 * retour d'information de branche JSON pour un projet
-	 * - nom du projet
-	 * - environnement demandé
-	 * - <strong>branche git actuelle</strong>
-	 * 
-	 * @param number $envId
+    /**
+     * retour d'information de branche JSON pour un projet
+     * - nom du projet
+     * - environnement demandé
+     * - <strong>branche git actuelle</strong>
+     *
+     * @param int|number $envId
      * @return branche actuelle
+     * @throws \Exception
+     *
      * @Route("/current/branch/{envId}" , name="_ajax_current_branch")
      * @Method("GET")
      * @Template()
-	 */
+     */
 	public function currentBranchAction($envId = 0) {
 
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $cmd = new CommandManager(AjaxController::$logger);
 
-        $data = $cmd->getCurrentSourceDetails($envId, false);
+        $project = $this->get("project.service")->getProject($envId);
+        $data = $cmd->getCurrentSourceDetails($project, false);
 
         if ($data == "") $data = $this->get('translator')->trans('rsv3.deploy.notdeployed');
         $data = str_replace("\n", "", $data);
@@ -108,12 +114,11 @@ class AjaxController extends Controller
 
 	}
 
+
     /**
-     * retour JSON de la liste des branches existante
-     *
-     * @param String $projectName
-     * @param number $envId
-     * @return json
+     * @param int $projectId
+     * @return JsonResponse
+     * @throws \Exception
      *
      * @Route("/env/{projectId}" , name="_ajax_get_id")
      * @Method("GET")
@@ -134,92 +139,71 @@ class AjaxController extends Controller
         $response = new JsonResponse();
         return $response->setData( $projects);
     }
-	
-	/**
-	 * retour d'information de Tag JSON pour un projet
-	 * - nom du projet
-	 * - environnement demandé
-	 * - <strong>Tag git actuelle</strong>
-	 * @return current tag
-	 * @param number $envId    
+
+    /**
+     * @param string $envId
+     * @return JsonResponse
+     * @throws \Exception
      * @Route("/tag" , name="_ajax_current_tag")
-	 */
+     */
 	public function currentTagAction($envId = "") {
 
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $project = $this->get("project.service")->getProject($envId);
 
-        $data = $cmd->getCurrentSourceDetails($envId, true);
+        $cmd = new CommandManager(AjaxController::$logger);
+        $data = $cmd->getCurrentSourceDetails($project, true);
         $data = str_replace("\n", "", $data);
 
         $response = new JsonResponse();
         return $response->setData( array("tag" => $data));
 	}
-	
-	/**
-	 * Création d'un nouveau Tag
-	 * 
-	 * @param string $envId
-	 *        	: environnement et projet demandé
-	 * @param string $newTag
-	 *        	: nom du Tag
-     * @Route("/tag/create/{envId}/{tag}" , name="_ajax_tag_create")
-	 */
-	public function createTagAction($envId = 0, $tag = "") {
+
+    /**
+     * @param int $envId
+     * @param string $g
+     * @param string $r
+     * @param string $c
+     * @return JsonResponse
+     * @throws \Exception
+     *
+     * @Route("/tag/create/{envId}/{g}/{r}/{c}" , name="_ajax_tag_create")
+     */
+	public function createTagAction($envId = 0, $g = "", $r = "", $c = "") {
 
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $cmd = new CommandManager(AjaxController::$logger);
 
-        $data = $cmd->getCurrentSourceDetails($envId, true);
+        $project = $this->get("project.service")->getProject($envId);
+
+        $data = $cmd->doCreateTag($project, "TAG-G".$g."R".$r."C".$c);
         $data = str_replace("\n", "", $data);
 
+        if ($data != "") {
+            $project->setTag($g."|".$r."|".$c);
+            $this->get("project.service")->updateProjectTag($project);
+        }
         $response = new JsonResponse();
         return $response->setData( array("tag" => $data));
 
 	}
-	
-	/**
-	 * retour JSON de la liste des tag existante
-	 * 
-	 * @param unknown $projectName        	
-	 */
-	public function allTagNameAction($projectName) {
-		$tags = $this->getGitNames ( $projectName, true );
-		echo json_encode ( responseSuccess ( $tags ) );
-	}
-
 
     /**
-     * Récupération de la liste des branches ou Tags pour un projet
+     * Changement de branche/tag pour un projet et environnement
      *
-     * @param string $projectName
-     *        	: nom du projet
-     * @param boolean $requestTag
-     *        	: demande les Tags (sinon branches)
-     * @return tableau de string
-     */
-    private function getGitNamesAction($projectName, $requestTag) {
-        $name = $projectName == "" ? $this->projects [0] [Deploy_ProjectBo::COL_NAME] : urldecode ( $projectName );
-
-        return $this->deployDao->getBranchOrTagList ( $name, $requestTag );
-    }
-	
-	/**
-	 * Changement de branche/tag pour un projet et environnement
-	 * 
-	 * @param string $envId
-	 *        	: clé environnement/projet
-	 * @param string $branch
-	 *        	: le nom de la branche/tag à mettre en place
+     * @param int|string $envId
+     *            : clé environnement/projet
+     * @param string $target
      * @return msg
+     * @throws \Exception
+     * @internal param string $branch : le nom de la branche/tag à mettre en place
+     *
      * @Route("/branch/change/{envId}/{target}" , name="_ajax_change_source")
-	 */
+     */
 	public function changeSourceAction($envId = 0, $target = "") {
 
         if (AjaxController::$logger == null)
@@ -227,53 +211,57 @@ class AjaxController extends Controller
 
         $data = array();
         if ($target != "") {
-            $project = new ProjectManager($this->getDoctrine()->getManager());
-            $cmd = new CommandManager(AjaxController::$logger, $project);
-            $data = $cmd->doChangeSource($envId, $target);
+            $cmd = new CommandManager(AjaxController::$logger);
+
+            $project = $this->get("project.service")->getProject($envId);
+            $data = $cmd->doChangeSource($project, $target);
         }
 
         $response = new JsonResponse();
         return $response->setData( $data );
 	}
-	
-	/**
-	 * Demande une mise à jour de source sur un serveur
-	 * 
-	 * @param string $envId        	
-	 * @return Json String : Messages retour du serveur
+
+    /**
+     * Demande une mise à jour de source sur un serveur
+     *
+     * @param int|string $envId
+     * @return Json String : Messages retour du serveur
+     * @throws \Exception
      *
      * @Route("/data/fetch/{envId}" , name="_ajax_fetch_data")
-	 */
+     */
 	public function fetchDataAction($envId = 0) {
 
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $cmd = new CommandManager(AjaxController::$logger);
 
-        $data = $cmd->doFetchData($envId);
+        $project = $this->get("project.service")->getProject($envId);
+        $data = $cmd->doFetchData($project);
 
         $response = new JsonResponse();
         return $response->setData( $data );
 	}
-	
-	/**
-	 * Effectue une mise à jour de la branche actuelle d'un projet
-	 * 
-	 * @param string $envId        	
-	 * @param string $current
+
+    /**
+     * Effectue une mise à jour de la branche actuelle d'un projet
+     *
+     * @param int|string $envId
+     * @param int|string $current
      * @return message
-     s* @Route("/data/update/{envId}/{current}" , name="_ajax_update_data")
-	 */
+     * @throws \Exception
+     *
+     * @Route("/data/update/{envId}/{current}" , name="_ajax_update_data")
+     */
 	public function updateSourceAction($envId = 0, $current = 0) {
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $project = new ProjectManager($this->getDoctrine()->getManager());
-        $cmd = new CommandManager(AjaxController::$logger, $project);
+        $cmd = new CommandManager(AjaxController::$logger);
 
-        $data = $cmd->doUpdateSource($envId, $current);
+        $project = $this->get("project.service")->getProject($envId);
+        $data = $cmd->doUpdateSource($project, $current);
 
         foreach($data as &$d) {
             $d = str_replace("\n", "", $d);
@@ -286,10 +274,12 @@ class AjaxController extends Controller
     /**
      * Effectue une mise à jour de la branche actuelle d'un projet
      *
-     * @param string $envId
-     * @param string $current
+     * @param int|string $envId
      * @return message
-    s* @Route("/tag/last/{envId}" , name="_ajax_tag_last")
+     * @throws \Exception
+     * @internal param string $current
+     *
+     * @Route("/tag/last/{envId}" , name="_ajax_tag_last")
      */
     public function getLastTagAction($envId = 0) {
 

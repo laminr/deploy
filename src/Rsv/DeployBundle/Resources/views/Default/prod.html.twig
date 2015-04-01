@@ -6,11 +6,11 @@
     <div class="col-md-12">
         <form id="tag-change-form" action="" class="forms forms-inline">
             <div>
-                <select class="select-branch col-sm-9 control">
+                <select class="select-branch col-sm-9 control" ng-model="tag">
                     <option ng-repeat="tag in tagList" value="[[tag]]">[[tag]]</option>
                 </select>
                 <div class="col-sm-3">
-                    <button class="btn btn-default" id="">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+                    <button class="btn btn-default" ng-click="changeSource(false)">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
                 </div>
             </div>
         </form>
@@ -21,9 +21,9 @@
             <div class="row">
                 <div class="col-sm-12">
                     <label>{% trans %}rsv3.deploy.tagLabel{% endtrans %}</label>
-                    <label ng-bind="tagTarget.g"></label>
-                    <label ng-bind="tagTarget.r"></label>
-                    <label ng-bind="tagTarget.c"></label>
+                    <label>G[[tagTarget.g]]</label>
+                    <label>R[[tagTarget.r]]</label>
+                    <label>C[[tagTarget.c]]</label>
                 </div>
             </div>
             <div class="row">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button class="btn btn-default" id="new-tag">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
+                    <button class="btn btn-default" id="new-tag" ng-click="newTag()" ng-show="newTagOk">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
                 </div>
             </div>
         </form>

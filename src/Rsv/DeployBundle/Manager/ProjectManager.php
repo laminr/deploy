@@ -42,6 +42,29 @@ class ProjectManager extends BaseManager
         return  $this->getRepository()->getEnvIds($envRepoId);
     }
 
+    public function updateProject(Project $project)
+    {
+        $current = $this->getProject($project->getId());
+
+        $current->setName($project->getName());
+        $current->setEnvironment($project->getEnvironment());
+        $current->setDomain($project->getDomain());
+        $current->setPath($project->getPath());
+        $current->setUser($project->getUser());
+        $current->setPassword($project->getPassword());
+        $current->setTag($project->getTag());
+
+        $this->em->flush();
+    }
+
+    public function updateProjectTag(Project $project)
+    {
+        $current = $this->getProject($project->getId());
+        $current->setTag($project->getTag());
+
+        $this->em->flush();
+    }
+
     /**
     * Save Project entity
     *
