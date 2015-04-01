@@ -53,6 +53,11 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     };
 
     $scope.select = function(id) {
+
+        $scope.updating = 1;
+        var running = {branch: 1, tag : 1, env: 1};
+        resetTag();
+
         var url = "";
         // recupération de toutes les branches existantes
         $scope.selected = id;
@@ -62,9 +67,13 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         url = params.urls.branchAll+"/"+id;
         $http.get(url).success(function(data) {
             $scope.branchList = data;
+
+            running.branch = 0;
+            if (running.tag == 0 && running.env == 0) $scope.updating = 0;
         }).error(
             function() {
                 alert("Oops! Branch");
+                if (running.tag == 0 && running.env == 0) $scope.updating = 0;
             }
         );
 
@@ -72,9 +81,13 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         url = params.urls.tagAll+"/"+id;
         $http.get(url).success(function(data) {
             $scope.tagList = data;
+
+            running.tag = 0;
+            if (running.branch == 0 && running.env == 0) $scope.updating = 0;
         }).error(
             function() {
-                alert("Oops! Branch");
+                alert("Oops! tags");
+                if (running.tag == 0 && running.env == 0) $scope.updating = 0;
             }
         );
 
@@ -83,11 +96,20 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         $http.get(url).success(function(data) {
             $scope.envIds = data;
             $scope.getCurrentBranch();
+
+            if ($scope.currentEnv == $scope.server.prod) {
+                $scope.getLastTag();
+            }
+
         }).error(
             function() {
                 alert("Oops! Env");
+                running.env = 0;
+                if (running.tag == 0 && running.branch == 0) $scope.updating = 0;
             }
         );
+
+
     };
 
     $scope.getCurrentBranch = function() {
@@ -221,4 +243,11 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         $scope.tagTarget.c = "C"+c;
     }
 
+    var resetTag = function() {
+        $scope.lastTag = { g:0, r:0, c:0 };
+
+        $scope.tagTarget.g = "Gx";
+        $scope.tagTarget.r = "Rx";
+        $scope.tagTarget.c = "Cx";
+    }
 }]);

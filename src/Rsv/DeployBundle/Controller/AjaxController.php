@@ -60,7 +60,7 @@ class AjaxController extends Controller
      * @param number $envId
      * @return json
      *
-     * @Route("/tags/{projectId}" , name="_ajax_all_tags")
+     * @Route("/tags/{projectId}" , name="_ajax_tag_all")
      * @Method("GET")
      * @Template()
      */
