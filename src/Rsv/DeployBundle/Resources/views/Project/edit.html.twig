@@ -1,20 +1,28 @@
 {% extends '::base.html.twig' %}
 
+{% block pageId %}
+    id="edit"
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/deploy.css') }}" rel="stylesheet" media="screen" />
+    {{ parent() }}
+{% endblock %}
+
 {% block body -%}
     <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h1>Project edit</h1>
+            {{ form(edit_form) }}
 
-        <h1>Project edit</h1>
-        {{ form(edit_form) }}
+            <div class="row">
+                {{ form(delete_form) }}
+            </div>
 
-        <div class="row">
-            {{ form(delete_form) }}
+            <br/><br/>
+            <a class="btn btn-default" href="{{ path('project') }}">
+                Back to the list
+            </a>
         </div>
-
-        <br/><br/>
-        <a class="btn btn-default" href="{{ path('project') }}">
-            Back to the list
-        </a>
     </div>
-
-
 {% endblock %}

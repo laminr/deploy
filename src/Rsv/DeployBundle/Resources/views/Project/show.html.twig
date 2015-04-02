@@ -1,52 +1,61 @@
 {% extends '::base.html.twig' %}
 
+{% block pageId %}
+    id="show"
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="{{ asset('css/deploy.css') }}" rel="stylesheet" media="screen" />
+    {{ parent() }}
+{% endblock %}
+
 {% block body -%}
-    <h1>Project</h1>
 
-    <table class="record_properties">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
-            <tr>
-                <th>Environment</th>
-                <td>{{ entity.environment }}</td>
-            </tr>
-            <tr>
-                <th>Domain</th>
-                <td>{{ entity.domain }}</td>
-            </tr>
-            <tr>
-                <th>Path</th>
-                <td>{{ entity.path }}</td>
-            </tr>
-            <tr>
-                <th>User</th>
-                <td>{{ entity.user }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ entity.password }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="col-sm-6 col-sm-offset-3">
 
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('project') }}">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('project_edit', { 'id': entity.id }) }}">
-            Edit
-        </a>
-    </li>
-    <li>{{ form(delete_form) }}</li>
-</ul>
+            <h1>Project</h1>
+
+            <table class="record_properties table">
+                <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ entity.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ entity.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Environment</th>
+                        <td>{{ entity.environment }}</td>
+                    </tr>
+                    <tr>
+                        <th>Domain</th>
+                        <td>{{ entity.domain }}</td>
+                    </tr>
+                    <tr>
+                        <th>Path</th>
+                        <td>{{ entity.path }}</td>
+                    </tr>
+                    <tr>
+                        <th>User</th>
+                        <td>{{ entity.user }}</td>
+                    </tr>
+                    <tr>
+                        <th>Password</th>
+                        <td>{{ entity.password }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{{ path('project') }}" class="btn btn-default">
+                Back to the list
+            </a>
+            <a href="{{ path('project_edit', { 'id': entity.id }) }}" class="btn btn-default">
+                Edit
+            </a>
+            {{ form(delete_form) }}
+        </div>
+    </div>
 {% endblock %}
