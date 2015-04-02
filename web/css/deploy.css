@@ -1,3 +1,13 @@
+#deploy-main #logout {
+  float: right;
+  position: absolute;
+  top: 15px;
+  right: 25px;
+}
+#deploy-main #logout a:hover {
+  text-decoration: none;
+  color: white;
+}
 #deploy-main .line {
   margin-bottom: 20px;
 }

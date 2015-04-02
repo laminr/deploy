@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+
+{% block pageId %}
+    id="login"
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+    <link href="{{ asset('css/login.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2 col-sm-offset-5">
+                <img src="{{ asset('img/claw_purple.png') }}" id="logo" alt="RSV"  />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% block content %}
+
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    {% endif %}
+                    </div>
+
+
+                    {% block fos_user_content %}{% endblock %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}

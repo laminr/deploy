@@ -25,5 +25,12 @@
                 <li ng-class="{ prod : server.prod.show}"><a href="#" ng-click="showServer(server.prod)">{% trans %}rsv3.server.prod{% endtrans %}</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
+
+        <div id="logout">
+            <a href="{{ path('fos_user_security_logout') }}">
+                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                <i class="glyphicon glyphicon-remove-sign"></i>
+            </a>
+        </div>
     </div><!-- /.container-fluid -->
 </nav>

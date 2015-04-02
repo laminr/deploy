@@ -1,3 +1,11 @@
+rsv_user:
+    resource: "@RsvUserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 rsv_deploy:
     resource: "@RsvDeployBundle/Controller"
     type:     annotation
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
