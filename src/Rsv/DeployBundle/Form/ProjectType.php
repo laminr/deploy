@@ -21,6 +21,7 @@ class ProjectType extends AbstractType
             ->add('path')
             ->add('user')
             ->add('password')
+            ->add('tag')
         ;
     }
     
