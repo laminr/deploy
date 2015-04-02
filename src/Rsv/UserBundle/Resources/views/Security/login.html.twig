@@ -64,6 +64,12 @@
                         <div class="col-sm-6 col-sm-offset-3">
                             <input type="submit" id="_submit" name="_submit" class="btn btn-primary form-control" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" />
                         </div>
+                        <br><br/>
+                        <!--
+                        <a href="{{ path('fos_user_resetting_request') }}" class="col-sm-12">
+                            <small class="text-center">Mot de passe oubli&eacute;</small>
+                        </a>
+                        -->
                        <div class="col-sm-6 col-sm-offset-3 text-right">
                            <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
                            <label for="remember_me">{{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}</label>
