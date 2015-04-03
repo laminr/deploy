@@ -51,10 +51,12 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             $scope.server.qualif.show = false;
             $scope.server.preprod.show = false;
             $scope.server.prod.show = true;
-            getLastTag();
         }
         $scope.currentEnv = server;
         $scope.getCurrentBranch();
+
+        // after getCurrentBranch to update current id
+        if (server.name == $scope.server.prod.name) getLastTag();
     };
 
     $scope.select = function(id) {
@@ -130,7 +132,6 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             var env = $scope.envIds[index];
             if (env.env.toLowerCase() == $scope.currentEnv.name.toLowerCase()) {
                 $scope.currentEnvId = env.id;
-                console.log("current:"+$scope.currentEnvId);
                 break;
             }
         }
@@ -187,9 +188,12 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
     var getLastTag = function() {
 
+        console.log("getLastTag");
+
         $scope.updating = 1;
 
         var url = params.urls.tagLast+"/"+$scope.currentEnvId;
+        console.log("getLastTag: "+url);
         $http.get(url).success(function(data) {
             $scope.lastTag = data;
             updateTargetTag(data.g, data.r, data.c);
