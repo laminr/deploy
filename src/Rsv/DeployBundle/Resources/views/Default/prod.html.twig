@@ -9,8 +9,8 @@
     <div class="col-md-12">
         <form id="tag-change-form" action="" class="forms forms-inline">
             <div>
-                <select class="select-branch col-sm-9 control" ng-model="tag">
-                    <option ng-repeat="tag in tagList" value="[[tag]]">[[tag]]</option>
+                <select class="select-branch col-sm-9 control" ng-model="tag.targetSrc">
+                    <option ng-repeat="tag in tag.list" value="[[tag]]">[[tag]]</option>
                 </select>
                 <div class="col-sm-3">
                     <button class="btn btn-default" ng-click="changeSource(false)">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
@@ -23,7 +23,7 @@
         <form id="new-tag-form" action="" class="forms forms-inline">
             <div class="row">
                 <div class="col-sm-12">
-                    <label ng-bind="tag.name"></label>
+                    <label ng-bind="tag.target.name"></label>
                 </div>
             </div>
             <div class="row">

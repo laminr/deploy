@@ -28,6 +28,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     $scope.tag = {
         last : { g:0, r:0, c:0 },
         target : { g: "x", r: "x", c: "x" },
+        targetSrc : "",
         list : [$scope.msg.loading],
         name : ""
     }
@@ -213,13 +214,13 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
     $scope.changeSource = function(changeBranch) {
 
-        if ((changeBranch && $scope.branch.target != "") || (!changeBranch && $scope.current.tag != "")) {
+        if ((changeBranch && $scope.branch.target != "") || (!changeBranch && $scope.tag.targetSrc != "")) {
 
             $scope.updating = 1;
             $scope.fetchMsg = [$scope.msg.loading];
             $scope.current.branch = [$scope.msg.loading];
 
-            var url = params.urls.change+"/"+$scope.current.envid+"/"+(changeBranch ? $scope.branch.target : $scope.tag.name) ;
+            var url = params.urls.change+"/"+$scope.current.envid+"/"+(changeBranch ? $scope.branch.target : $scope.tag.targetSrc) ;
             $http.get(url).success(function(data) {
                 $scope.fetchMsg = data;
                 $scope.getCurrentBranch();
@@ -239,7 +240,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         var url = params.urls.tagLast+"/"+$scope.current.envid;
 
         $http.get(url).success(function(data) {
-            $scope.current.tag = data;
+            $scope.tag.last = data;
             updateTargetTag(data.g, data.r, data.c);
             $scope.updating = 0;
         }).error(
@@ -305,14 +306,12 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     }
 
     var updateTargetTag = function(g,r,c) {
+
         $scope.tag.target.g = g;
         $scope.tag.target.r = r;
         $scope.tag.target.c = c;
 
-        $scope.tag.name = "TAG-"
-            +"G"+$scope.tag.target.g
-            +"R"+$scope.tag.target.r
-            +"C"+$scope.tag.target.c;
+        $scope.tag.target.name = "TAG-G"+g+"R"+r+"C"+c;
     }
 
     var resetTag = function() {
@@ -322,7 +321,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         $scope.tag.target.r = "x";
         $scope.tag.target.c = "x";
 
-        $scope.tag.name = "";
+        $scope.tag.target.name = "";
 
     }
 }]);
