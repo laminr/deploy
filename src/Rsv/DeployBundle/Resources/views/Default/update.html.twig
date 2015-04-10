@@ -1,17 +1,10 @@
-<!-- PREPROD -->
-<h2>
-    <span class="right">
-        <span id="{{ currentServer }}"></span>
-    </span>
-</h2>
-
 <div class="row line">
     <div class="col-md-12 title">
         {% trans %}rsv3.deploy.update{% endtrans %}
         <span ng-bind="current" class="pull-right branchName"></span>
     </div>
     <form class="col-xs-12">
-        <button class="col-xs-12 btn btn-success" ng-click="updateMe()" id="{{ currentUpdate }}">{% trans %}rsv3.deploy.update{% endtrans %}</button>
+        <button class="col-xs-12 btn btn-success" ng-click="updateMe()">{% trans %}rsv3.deploy.update{% endtrans %}</button>
     </form>
 </div>
 
@@ -22,7 +15,6 @@
             <option ng-repeat="branch in branchList" value="[[branch | trim]]">[[branch]]</option>
         </select>
         <button class="btn-info col-sm-4 control"
-                id="{{ currentActive }}"
                 ng-click="changeSource(true)"
                 ng-show="target != current"
                 >

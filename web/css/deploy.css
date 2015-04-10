@@ -26,6 +26,7 @@
 }
 #deploy-main #project {
   position: relative;
+  margin-top: 15px;
 }
 #deploy-main #project .spinner {
   z-index: 1;

@@ -47,10 +47,10 @@
             <div id="project" class="col-lg-4 col-sm-6" ng-show="selected">
                 {{ include('RsvDeployBundle:Default:spinner.html.twig') }}
                 <div class="_row" id="qualif" ng-show="server.qualif.show">
-                    {{ include('RsvDeployBundle:Default:update.html.twig' , {'currentServer': 'currentQualif', 'currentActive' : 'activ-qualif', 'currentUpdate' : 'update-qualif'}) }}
+                    {{ include('RsvDeployBundle:Default:update.html.twig') }}
                 </div>
                 <div class="_row" id="preprod" ng-show="server.preprod.show">
-                    {{ include('RsvDeployBundle:Default:update.html.twig' , {'currentServer': 'currentPreProd', 'currentActive' : 'activ-preprod', 'currentUpdate' : 'update-preprod'}) }}
+                    {{ include('RsvDeployBundle:Default:update.html.twig') }}
                 </div>
                 <!-- PROD -->
                 <div class="_row" id="prod" ng-show="server.prod.show">
