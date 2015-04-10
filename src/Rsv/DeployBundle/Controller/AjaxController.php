@@ -101,9 +101,9 @@ class AjaxController extends Controller
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
-        $cmd = new CommandManager(AjaxController::$logger);
-
         $project = $this->get("project.service")->getProject($envId);
+
+        $cmd = new CommandManager(AjaxController::$logger);
         $data = $cmd->getCurrentSourceDetails($project, false);
 
         if ($data == "") $data = $this->get('translator')->trans('rsv3.deploy.notdeployed');
@@ -114,6 +114,26 @@ class AjaxController extends Controller
 
 	}
 
+    /**
+     * @param string $envId
+     * @return JsonResponse
+     * @throws \Exception
+     * @Route("/current/tag/{envId}" , name="_ajax_current_tag")
+     */
+    public function currentTagAction($envId = "") {
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = $this->get("project.service")->getProject($envId);
+
+        $cmd = new CommandManager(AjaxController::$logger);
+        $data = $cmd->getCurrentSourceDetails($project, true);
+        $data = str_replace("\n", "", $data);
+
+        $response = new JsonResponse();
+        return $response->setData( array("tag" => $data));
+    }
 
     /**
      * @param int $projectId
@@ -139,27 +159,6 @@ class AjaxController extends Controller
         $response = new JsonResponse();
         return $response->setData( $projects);
     }
-
-    /**
-     * @param string $envId
-     * @return JsonResponse
-     * @throws \Exception
-     * @Route("/tag" , name="_ajax_current_tag")
-     */
-	public function currentTagAction($envId = "") {
-
-        if (AjaxController::$logger == null)
-            AjaxController::$logger = $this->get('logger');
-
-        $project = $this->get("project.service")->getProject($envId);
-
-        $cmd = new CommandManager(AjaxController::$logger);
-        $data = $cmd->getCurrentSourceDetails($project, true);
-        $data = str_replace("\n", "", $data);
-
-        $response = new JsonResponse();
-        return $response->setData( array("tag" => $data));
-	}
 
     /**
      * @param int $envId
@@ -202,7 +201,7 @@ class AjaxController extends Controller
      * @throws \Exception
      * @internal param string $branch : le nom de la branche/tag à mettre en place
      *
-     * @Route("/branch/change/{envId}/{target}" , name="_ajax_change_source")
+     * @Route("/source/change/{envId}/{target}" , name="_ajax_change_source")
      */
 	public function changeSourceAction($envId = 0, $target = "") {
 

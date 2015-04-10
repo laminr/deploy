@@ -26,7 +26,6 @@
         </div>
 
         <div class="row">
-
             <div class="col-lg-3 col-sm-6">
                 <div class="col-sm-12">
                     <h3>{% trans %}rsv3.deploy.project{% endtrans %}</h3>
@@ -36,6 +35,9 @@
                            ng-class="{ active: selected == {{ project.id }} }"
                            >{{ project.name }}</a>
                     {% endfor %}
+                </div>
+                <div class="col-sm-12" ng-show="error.has">
+                    <div class="alert alert-sm alert-danger" ng-bind="error.message" ></div>
                 </div>
             </div>
 
@@ -78,6 +80,7 @@
         var params = {
             urls : {
                 branchCurrent : "{{ path('_ajax_current_branch') }}",
+                tagCurrent: "{{ path('_ajax_current_tag') }}",
                 branchAll : "{{ path('_ajax_all_branches') }}",
                 envId   : "{{ path('_ajax_get_id') }}",
                 fetch   : "{{ path('_ajax_fetch_data') }}",
