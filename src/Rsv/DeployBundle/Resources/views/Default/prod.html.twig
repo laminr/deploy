@@ -3,7 +3,7 @@
 <div class="row">
 
     <div class="col-md-12 title">
-        {% trans %}rsv3.deploy.tag{% endtrans %}
+        {{ "rsv3.deploy.tag" |trans }}
         <span ng-bind="current.tag" class="pull-right branchName"></span>
     </div>
     <div class="col-md-12">
@@ -13,7 +13,9 @@
                     <option ng-repeat="tag in tag.list" value="[[tag]]">[[tag]]</option>
                 </select>
                 <div class="col-sm-3">
-                    <button class="btn btn-default" ng-click="changeSource(false)">{% trans %}rsv3.deploy.activate{% endtrans %}</button>
+                    <button class="btn btn-default" ng-click="changeSource(false)">
+                        {{ "rsv3.deploy.activate" |trans }}
+                    </button>
                 </div>
             </div>
         </form>
@@ -29,14 +31,14 @@
             <div class="row">
                 <div class="col-sm-9">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('g')">{% trans %}rsv3.tag.g{% endtrans %}</button>
-                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('r')">{% trans %}rsv3.tag.r{% endtrans %}</button>
-                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('c')">{% trans %}rsv3.tag.c{% endtrans %}</button>
-                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('x')">{% trans %}rsv3.tag.reset{% endtrans %}</button>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('g')">{{ "rsv3.tag.g" |trans }}</button>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('r')">{{ "rsv3.tag.r" |trans }}</button>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('c')">{{ "rsv3.tag.c" |trans }}</button>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('x')">{{ "rsv3.tag.reset" |trans }}</button>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <button class="btn btn-default" id="new-tag" ng-click="newTag()" ng-show="newTagOk">{% trans %}rsv3.deploy.validate{% endtrans %}</button>
+                    <button class="btn btn-default" id="new-tag" ng-click="newTag()" ng-show="newTagOk">{{ "rsv3.deploy.validate" |trans }}</button>
                 </div>
             </div>
         </form>

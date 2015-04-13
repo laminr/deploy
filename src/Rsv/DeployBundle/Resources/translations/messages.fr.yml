@@ -1,4 +1,5 @@
 rsv3:
+    home: "Acceuil"
     deploy:
         project: "Projets"
         deployment: "Déploiement"

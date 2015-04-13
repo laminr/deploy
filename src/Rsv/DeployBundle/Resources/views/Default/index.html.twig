@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-lg-3 col-sm-6">
                 <div class="col-sm-12">
-                    <h3>{% trans %}rsv3.deploy.project{% endtrans %}</h3>
+                    <h3>{{ "rsv3.deploy.project" |trans }}</h3>
                     {% for project in data.projects %}
                         <a href="#" class="list-group-item"
                            ng-click="select({{ project.id }})"
@@ -42,7 +42,7 @@
             </div>
 
             <div id="selectOne" class="col-lg-9 col-md-6" ng-hide="selected">
-                {% trans %}rsv3.project.selectOne{% endtrans %}
+                {{ "rsv3.project.selectOne" |trans }}
             </div>
 
             <!-- COLONE 2 -->
