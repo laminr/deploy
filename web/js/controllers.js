@@ -8,9 +8,8 @@ var deployApp = angular
 
 deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) {
 
-    $scope.msg = { loading: "<loading>", updating: "UPDATING" } ;
+    $scope.msg = { loading: "<loading>", updating: "<updating>", empty: "" } ;
     $scope.selected = 0;
-    $scope.newTagOk = 0;
     $scope.updating = 0;
     $scope.error = { has : false, message: ""};
 
@@ -22,31 +21,28 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
     $scope.branch = {
         target : "",
-        list : [$scope.msg.loading]
+        list : [$scope.msg.loading],
+        current : $scope.msg.loading
     };
 
     $scope.tag = {
         last : { g:0, r:0, c:0 },
         target : { g: "x", r: "x", c: "x" },
-        targetSrc : "",
+        change : $scope.msg.empty,
+        current : $scope.msg.empty,
         list : [$scope.msg.loading],
-        name : ""
-    }
+        newIsOk : false
+    };
 
     $scope.running = {branch: 1, tag : 1, env: 1};
 
     $scope.current = {
         env     : $scope.server.qualif,
-        envid   : 0,
-        branch  : $scope.msg.loading,
-        tag     : ""
-    }
+        envid   : 0
+    };
 
     $scope.envIds     = [];
     $scope.fetchMsg   = [];
-
-    // targets pour changement de source
-
 
     $scope.showServer = function (server) {
 
@@ -73,6 +69,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     };
 
     $scope.select = function(id) {
+
         $scope.updating = 1;
         $scope.running = {branch: 1, tag : 1, env: 1};
         resetTag();
@@ -106,7 +103,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 if ($scope.running.tag == 0 && $scope.running.branch == 0) $scope.updating = 0;
             }
         );
-    }
+    };
 
     var getAllBranch = function() {
         // all branch names
@@ -122,7 +119,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 if ($scope.running.tag == 0 && $scope.running.env == 0) $scope.updating = 0;
             }
         );
-    }
+    };
 
     var getAllTags =  function() {
         // all tags names
@@ -138,12 +135,12 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 if ($scope.running.tag == 0 && $scope.running.env == 0) $scope.updating = 0;
             }
         );
-    }
+    };
 
     $scope.getCurrentBranch = function() {
 
         $scope.updating = 1;
-        $scope.current.branch = $scope.msg.loading;
+        $scope.branch.current = $scope.msg.loading;
 
         for(var index in $scope.envIds) {
             var env = $scope.envIds[index];
@@ -155,8 +152,16 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
         var url = params.urls.branchCurrent+"/"+$scope.current.envid;
         $http.get(url).success(function(data) {
-            $scope.current.branch = data.branch;
-            $scope.branch.target = data.branch;
+
+            if (data.branch != "HEAD") {
+                $scope.branch.current = data.branch;
+                $scope.branch.target = data.branch;
+            }
+            else {
+                $scope.branch.current = $scope.msg.empty;
+                $scope.getCurrentTag();
+            }
+
             $scope.updating = 0;
         }).error(
             function(data, status, headers, config) {
@@ -170,7 +175,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     $scope.getCurrentTag = function() {
 
         $scope.updating = 1;
-        $scope.current.branch = $scope.msg.loading;
+        $scope.tag.current = $scope.msg.loading;
 
         for(var index in $scope.envIds) {
             var env = $scope.envIds[index];
@@ -182,8 +187,8 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
         var url = params.urls.tagCurrent+"/"+$scope.current.envid;
         $http.get(url).success(function(data) {
-            $scope.current.branch = data.branch;
-            $scope.branch.target = data.branch;
+            $scope.tag.current = data.tag;
+            $scope.tag.change = data.tag;
             $scope.updating = 0;
         }).error(
             function(data, status, headers, config) {
@@ -199,7 +204,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         $scope.updating = 1;
         $scope.fetchMsg = [$scope.msg.loading];
 
-        var url = params.urls.update+"/"+$scope.current.envid+"/"+$scope.current.branch;
+        var url = params.urls.update+"/"+$scope.current.envid+"/"+$scope.branch.current;
         $http.get(url).success(function(data) {
             $scope.fetchMsg = data;
             $scope.updating = 0;
@@ -218,9 +223,10 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
             $scope.updating = 1;
             $scope.fetchMsg = [$scope.msg.loading];
-            $scope.current.branch = [$scope.msg.loading];
+            $scope.branch.current = [$scope.msg.loading];
+            $scope.tag.current = "";
 
-            var url = params.urls.change+"/"+$scope.current.envid+"/"+(changeBranch ? $scope.branch.target : $scope.tag.targetSrc) ;
+            var url = params.urls.change+"/"+$scope.current.envid+"/"+(changeBranch ? $scope.branch.target : $scope.tag.change) ;
             $http.get(url).success(function(data) {
                 $scope.fetchMsg = data;
                 $scope.getCurrentBranch();
@@ -253,7 +259,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     };
 
     $scope.tagTargetType = function(target) {
-        $scope.newTagOk = 1;
+        $scope.tag.newIsOk = true;
 
         switch (target) {
             case "g":
@@ -279,10 +285,10 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                     $scope.tag.last.r,
                     $scope.tag.last.c
                 );
-                $scope.newTagOk = 0;
+                $scope.tag.newIsOk = false;
                 break;
         }
-    }
+    };
 
     $scope.newTag = function() {
 
@@ -303,7 +309,11 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
                 $scope.error.messsage = "Erreur: newTag --> "+data;
             }
         );
-    }
+    };
+
+    var buildTagTarget = function(g,r,c) {
+        return "TAG-G"+g+"R"+r+"C"+c;
+    };
 
     var updateTargetTag = function(g,r,c) {
 
@@ -311,10 +321,11 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         $scope.tag.target.r = r;
         $scope.tag.target.c = c;
 
-        $scope.tag.target.name = "TAG-G"+g+"R"+r+"C"+c;
-    }
+        $scope.tag.target.name = buildTagTarget(g,r,c);
+    };
 
     var resetTag = function() {
+
         $scope.tag.last = { g:0, r:0, c:0 };
 
         $scope.tag.target.g = "x";
@@ -323,5 +334,6 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
 
         $scope.tag.target.name = "";
 
-    }
+    };
+
 }]);

@@ -1,10 +1,14 @@
 <div class="row line">
     <div class="col-md-12 title">
         {{ "rsv3.deploy.update" |trans }}
-        <span ng-bind="current.branch" class="pull-right branchName"></span>
+        <span ng-bind="branch.current" class="pull-right branchName"></span>
     </div>
     <form class="col-xs-12">
-        <button class="col-xs-12 btn btn-success" ng-click="updateMe()">{% trans %}rsv3.deploy.update{% endtrans %}</button>
+        <button class="col-xs-12 btn btn-success"
+                ng-click="updateMe()"
+                ng-disabled="branch.current == msg.empty">
+            {{ "rsv3.deploy.update" |trans }}
+        </button>
     </form>
 </div>
 
@@ -16,7 +20,7 @@
         </select>
         <button class="btn-info col-sm-4 control"
                 ng-click="changeSource(true)"
-                ng-show="branch.target != current.branch"
+                ng-show="branch.target != branch.current"
                 >
             {{ "rsv3.deploy.activate" |trans }}
         </button>
