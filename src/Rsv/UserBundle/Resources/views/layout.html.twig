@@ -2,7 +2,7 @@
 
 
 {% block pageId %}
-    id="login"
+    id="layout"
 {% endblock %}
 
 {% block stylesheets %}
@@ -13,8 +13,8 @@
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-sm-2 col-sm-offset-5">
-                <img src="{{ asset('img/claw_purple.png') }}" id="logo" alt="RSV"  />
+            <div class="col-sm-6 col-sm-offset-3">
+                <img src="{{ asset('img/logo-big.png') }}" id="logo" alt="RSV"  />
             </div>
         </div>
         <div class="row">
@@ -30,7 +30,6 @@
                         <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
                     {% endif %}
                     </div>
-
 
                     {% block fos_user_content %}{% endblock %}
                 {% endblock %}

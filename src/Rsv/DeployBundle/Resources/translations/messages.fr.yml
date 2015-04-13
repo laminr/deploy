@@ -30,10 +30,16 @@ rsv3:
         prod: "Production"
 
     project:
-        selectOne: Sélectionner un projet
+        selectOne: "Sélectionner un projet"
 
     tag:
-        g: Majeur
-        r: Révision
-        c: Correction
-        reset: x
+        g: "Majeur"
+        r: "Révision"
+        c: "Correction"
+        reset: "x"
+
+    profil:
+        my: "Mon compte"
+        show: "Mes données"
+        edit: "Mettre à jour"
+        resetPass: "Changer mon môt de passe"

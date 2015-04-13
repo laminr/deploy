@@ -1,0 +1,11 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<form action="{{ path('fos_user_profile_edit') }}" {{ form_enctype(form) }} method="POST" class="fos_user_profile_edit">
+    {{ form_widget(form) }}
+    <div class="row">
+        <input type="submit" value="{{ 'profile.edit.submit'|trans }}" class="btn btn-info col-sm-8"/>
+        <a href="{{ path('homepage') }}" class="btn btn-default col-sm-4">
+            {% trans %}login.home{% endtrans %}
+        </a>
+    </div>
+</form>

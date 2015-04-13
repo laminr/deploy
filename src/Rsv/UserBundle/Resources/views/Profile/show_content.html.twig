@@ -1,0 +1,15 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="row">
+    <div class="fos_user_user_show well well-lg">
+        <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+        <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+    </div>
+</div>
+
+<div class="row well">
+    <a href="{{ path('fos_user_profile_edit') }}" class="btn btn-info col-sm-4">Editer</a>
+    <a href="{{ path('homepage') }}" class="btn btn-default col-sm-8">
+        {{ "login.home" |trans }}
+    </a>
+</div>

@@ -1,3 +1,7 @@
+#deploy-main .dropdown-menu > li > a:hover {
+  text-decoration: none;
+  background-color: #337ab7;
+}
 #deploy-main #logout {
   float: right;
   position: absolute;
@@ -7,6 +11,9 @@
 #deploy-main #logout a:hover {
   text-decoration: none;
   color: white;
+}
+#deploy-main #logout ul {
+  margin-right: 20px;
 }
 #deploy-main .line {
   margin-bottom: 20px;

@@ -16,3 +16,12 @@ form {
   margin-top: 20px;
   text-align: center;
 }
+#layout {
+  background-color: #0FA7B8;
+}
+#layout .container {
+  margin-top: 50px;
+}
+#layout form {
+  padding: 10px;
+}
