@@ -3,24 +3,22 @@
 <div class="row">
 
     <div class="col-sm-6">
-        <div class="col-md-12 title">
+        <div class="col-sm-12 title">
             {{ "rsv3.deploy.tag" |trans }}
             <span ng-bind="tag.current" class="pull-right branchName"></span>
         </div>
-        <form id="tag-change-form" action="" class="forms forms-inline">
-            <div>
-                <select class="select-branch col-sm-9 control" ng-model="tag.change">
-                    <option ng-repeat="tag in tag.list" value="[[tag | trim]]">[[tag]]</option>
-                </select>
-                <div class="col-sm-3">
-                    <button class="btn btn-default"
-                            ng-click="changeSource(false)"
-                            ng-show="tag.change != tag.current">
-                        {{ "rsv3.deploy.activate" |trans }}
-                    </button>
-                </div>
-            </div>
-        </form>
+        <div class="col-sm-9">
+            <select class="form-control" ng-model="tag.change">
+                <option ng-repeat="tag in tag.list" value="[[tag | trim]]">[[tag]]</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <button class="btn btn-default"
+                    ng-click="changeSource(false)"
+                    ng-show="tag.change != tag.current">
+                {{ "rsv3.deploy.activate" |trans }}
+            </button>
+        </div>
     </div>
 
     <div class="col-sm-6">
