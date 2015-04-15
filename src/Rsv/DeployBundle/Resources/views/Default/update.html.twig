@@ -1,28 +1,32 @@
-<div class="row line">
-    <div class="col-md-12 title">
-        {{ "rsv3.deploy.update" |trans }}
-        <span ng-bind="branch.current" class="pull-right branchName"></span>
-    </div>
-    <form class="col-xs-12">
-        <button class="col-xs-12 btn btn-success"
-                ng-click="updateMe()"
-                ng-disabled="branch.current == msg.empty">
-            {{ "rsv3.deploy.update" |trans }}
-        </button>
-    </form>
-</div>
+<div class="row">
 
-<div class="row line">
-    <div class="col-md-12 title">{{ "rsv3.deploy.changeBranch" |trans }}</div>
-    <form action="" class="forms forms-inline col-md-8 col-lg-12" disabled="disabled">
-        <select class="select-branch col-sm-8 control" ng-model="branch.target">
-            <option ng-repeat="branch in branch.list" value="[[branch | trim]]">[[branch]]</option>
-        </select>
-        <button class="btn-info col-sm-4 control"
-                ng-click="changeSource(true)"
-                ng-show="branch.target != branch.current"
-                >
-            {{ "rsv3.deploy.activate" |trans }}
-        </button>
-    </form>
+    <div class="col-sm-6">
+        <div class="col-md-12 title">
+            {{ "rsv3.deploy.update" |trans }}
+            <span ng-bind="branch.current" class="pull-right branchName"></span>
+        </div>
+        <form class="col-xs-12">
+            <button class="col-xs-12 btn btn-success"
+                    ng-click="updateMe()"
+                    ng-disabled="branch.current == msg.empty">
+                {{ "rsv3.deploy.update" |trans }}
+            </button>
+        </form>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="col-md-12 title">{{ "rsv3.deploy.changeBranch" |trans }}</div>
+        <form action="" class="forms forms-inline col-md-8 col-lg-12" disabled="disabled">
+            <select class="select-branch col-sm-8 control" ng-model="branch.target">
+                <option ng-repeat="branch in branch.list" value="[[branch | trim]]">[[branch]]</option>
+            </select>
+            <button class="btn-info col-sm-4 control"
+                    ng-click="changeSource(true)"
+                    ng-show="branch.target != branch.current"
+                    >
+                {{ "rsv3.deploy.activate" |trans }}
+            </button>
+        </form>
+    </div>
+
 </div>

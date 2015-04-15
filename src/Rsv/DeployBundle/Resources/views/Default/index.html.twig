@@ -16,58 +16,51 @@
 {% block body %}
 <div class="container">
 
-    <!-- LISTE BRANCHE -->
     <div class="row">
+        <div class="col-xs-12">
+            {{ include('RsvDeployBundle:Default:navbar.html.twig') }}
+        </div>
+    </div>
 
-        <div class="row">
-            <div class="col-xs-12">
-                {{ include('RsvDeployBundle:Default:navbar.html.twig') }}
+    <div class="row">
+        <div class="col-sm-3">
+            <div>
+                <h3>{{ "rsv3.deploy.project" |trans }}</h3>
+                {% for project in data.projects %}
+                    <a href="#" class="list-group-item"
+                       ng-click="select({{ project.id }})"
+                       ng-class="{ active: selected == {{ project.id }} }"
+                       >{{ project.name }}</a>
+                {% endfor %}
             </div>
+            <div class="alert alert-sm alert-danger" ng-bind="error.message" ng-show="error.has" ></div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-3 col-sm-6">
-                <div class="col-sm-12">
-                    <h3>{{ "rsv3.deploy.project" |trans }}</h3>
-                    {% for project in data.projects %}
-                        <a href="#" class="list-group-item"
-                           ng-click="select({{ project.id }})"
-                           ng-class="{ active: selected == {{ project.id }} }"
-                           >{{ project.name }}</a>
-                    {% endfor %}
-                </div>
-                <div class="col-sm-12" ng-show="error.has">
-                    <div class="alert alert-sm alert-danger" ng-bind="error.message" ></div>
-                </div>
-            </div>
-
-            <div id="selectOne" class="col-lg-9 col-md-6" ng-hide="selected">
-                {{ "rsv3.project.selectOne" |trans }}
-            </div>
-
-            <!-- COLONE 2 -->
-            <div id="project" class="col-lg-4 col-sm-6" ng-show="selected">
-                {{ include('RsvDeployBundle:Default:spinner.html.twig') }}
-                <div class="_row" id="qualif" ng-show="server.qualif.show">
-                    {{ include('RsvDeployBundle:Default:update.html.twig') }}
-                </div>
-                <div class="_row" id="preprod" ng-show="server.preprod.show">
-                    {{ include('RsvDeployBundle:Default:update.html.twig') }}
-                </div>
-                <!-- PROD -->
-                <div class="_row" id="prod" ng-show="server.prod.show">
-                    {{ include('RsvDeployBundle:Default:prod.html.twig') }}
-                </div>
-            </div> <!-- fin colonne 2 -->
-
-            <div class="col-lg-5 hidden-md" ng-show="selected">
-                <code class="col-xs-12" id="bash-return">
-                    <div ng-repeat="msg in fetchMsg">[[msg]]</div>
-                </code>
-            </div>
+        <div id="selectOne" class="col-lg-9 col-md-6" ng-hide="selected">
+            {{ "rsv3.project.selectOne" |trans }}
         </div>
 
-	</div>
+        <!-- COLONE 2 -->
+        <div id="project" class="col-sm-9" ng-show="selected">
+            {{ include('RsvDeployBundle:Default:spinner.html.twig') }}
+            <div id="qualif" ng-show="server.qualif.show" class="row">
+                {{ include('RsvDeployBundle:Default:update.html.twig') }}
+            </div>
+            <div id="preprod" ng-show="server.preprod.show" class="row">
+                {{ include('RsvDeployBundle:Default:update.html.twig') }}
+            </div>
+            <!-- PROD -->
+            <div id="prod" ng-show="server.prod.show" class="row">
+                {{ include('RsvDeployBundle:Default:prod.html.twig') }}
+            </div>
+
+            <code class="col-xs-12" id="bash-return">
+                <div ng-repeat="msg in fetchMsg">[[msg]]</div>
+            </code>
+        </div> <!-- fin colonne 2 -->
+    </div>
+
+</div>
 {% endblock %}
 
 {% block javascripts %}

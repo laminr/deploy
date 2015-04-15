@@ -2,11 +2,11 @@
 
 <div class="row">
 
-    <div class="col-md-12 title">
-        {{ "rsv3.deploy.tag" |trans }}
-        <span ng-bind="tag.current" class="pull-right branchName"></span>
-    </div>
-    <div class="col-md-12">
+    <div class="col-sm-6">
+        <div class="col-md-12 title">
+            {{ "rsv3.deploy.tag" |trans }}
+            <span ng-bind="tag.current" class="pull-right branchName"></span>
+        </div>
         <form id="tag-change-form" action="" class="forms forms-inline">
             <div>
                 <select class="select-branch col-sm-9 control" ng-model="tag.change">
@@ -23,14 +23,14 @@
         </form>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-sm-6">
         <form id="new-tag-form" action="" class="forms forms-inline">
-            <div class="row">
+            <div class="_row">
                 <div class="col-sm-12">
                     <label ng-bind="tag.target.name"></label>
                 </div>
             </div>
-            <div class="row">
+            <div class="_row">
                 <div class="col-sm-9">
                     <div class="btn-group" role="group">
                         <button type="button" class="btn btn-sm btn-default" ng-click="tagTargetType('g')">{{ "rsv3.tag.g" |trans }}</button>
