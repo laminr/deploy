@@ -33,16 +33,34 @@
                         {% trans %}rsv3.profil.my{% endtrans %}<b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ path('fos_user_profile_show') }}">{% trans %}rsv3.profil.show{% endtrans %}</a></li>
-                        <li><a href="{{ path('fos_user_profile_edit') }}">{% trans %}rsv3.profil.edit{% endtrans %}</a></li>
-                        <li><a href="{{ path('fos_user_change_password') }}">{% trans %}rsv3.profil.resetPass{% endtrans %}</a></li>
+                        <li>
+                            <a href="{{ path('fos_user_profile_show') }}">
+                                <i class="glyphicon glyphicon-user"></i>
+                                {{ "rsv3.profil.show" |trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('fos_user_profile_edit') }}">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                {{ "rsv3.profil.edit" |trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('fos_user_change_password') }}">
+                                <i class="glyphicon glyphicon-lock"></i>
+                                {{ "rsv3.profil.resetPass" |trans }}
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="{{ path('fos_user_security_logout') }}">
+                                <i class="glyphicon glyphicon-remove-sign"></i>
+                                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                            </a>
+                        </li>
                     </ul>
                 </li>
             </ul>
-            <a href="{{ path('fos_user_security_logout') }}">
-                {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                <i class="glyphicon glyphicon-remove-sign"></i>
-            </a>
         </div>
     </div><!-- /.container-fluid -->
 </nav>
