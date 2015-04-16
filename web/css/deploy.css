@@ -38,14 +38,6 @@
   position: relative;
   margin-top: 15px;
 }
-#deploy-main #project .spinner {
-  z-index: 1;
-  position: absolute;
-  top: 10px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-}
 #deploy-main #selectOne {
   margin-top: 50px;
   padding-top: 140px;
