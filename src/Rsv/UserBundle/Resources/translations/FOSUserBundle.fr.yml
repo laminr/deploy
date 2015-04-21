@@ -1,2 +1,7 @@
 rsv3:
     home: "Acceuil"
+
+    form:
+        user:
+            enabled: Actif
+            disabled: Désactivé
