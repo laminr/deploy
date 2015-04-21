@@ -7,3 +7,12 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+
+services:
+    rs_user.registration_complet:
+        class: Rsv\UserBundle\EventListener\RegistrationConfirmListener
+        #arguments: [ @router, @logger ]
+        arguments: [@fos_user.user_manager, @doctrine.orm.entity_manager]
+        tags:
+            - { name: kernel.event_subscriber }
