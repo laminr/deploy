@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="container">
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1>User list</h1>
+        <table class="records_list table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Actif</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.username }}</td>
+                    <td>{{ entity.email }}</td>
+                    <td>{{ entity.enabled }}</td>
+                    <td>
+                        <a href="{{ path('user_edit', { 'id': entity.id }) }}" class="btn btn-default">edit</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

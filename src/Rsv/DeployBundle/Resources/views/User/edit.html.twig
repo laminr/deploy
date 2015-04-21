@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<div class="container">
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1>User edit</h1>
+
+        {{ form(edit_form) }}
+
+        <div>
+            <a href="{{ path('user') }}" class="btn btn-default">
+                Back to the list
+            </a>
+        </div>
+        <div class="pull-right">
+            {{ form(delete_form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
