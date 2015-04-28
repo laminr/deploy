@@ -61,7 +61,9 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             $scope.server.preprod.show = false;
             $scope.server.prod.show = true;
         }
+
         $scope.current.env = server;
+        $scope.fetchMsg = [];
         $scope.getCurrentBranch();
 
         // after getCurrentBranch to update current id
@@ -98,7 +100,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: liste ID Env --> "+data;
+                $scope.error.messsage = "Erreur: liste ID Env --> "+data.toString();
                 $scope.running.env = 0;
                 if ($scope.running.tag == 0 && $scope.running.branch == 0) $scope.updating = 0;
             }
@@ -131,7 +133,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: getAllTags --> "+data;
+                $scope.error.messsage = "Erreur: getAllTags --> "+data.toString();
                 if ($scope.running.tag == 0 && $scope.running.env == 0) $scope.updating = 0;
             }
         );
@@ -166,7 +168,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: getCurrentBranch --> "+data;
+                $scope.error.messsage = "Erreur: getCurrentBranch --> "+data.toString();
                 $scope.updating = 0;
             }
         );
@@ -193,7 +195,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: getCurrentBranch --> "+data;
+                $scope.error.messsage = "Erreur: getCurrentBranch --> "+data.toString();
                 $scope.updating = 0;
             }
         );
@@ -211,7 +213,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: updateMe --> "+data;
+                $scope.error.messsage = "Erreur: updateMe --> "+data.toString();
                 $scope.updating = 0;
             }
         );
@@ -233,7 +235,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
             }).error(
                 function(data, status, headers, config) {
                     $scope.error.has = true;
-                    $scope.error.messsage = "Erreur: changeSource --> "+data;
+                    $scope.error.messsage = "Erreur: changeSource --> "+data.toString();
                     $scope.updating = 0;
                 }
             );
@@ -252,7 +254,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: getLastTag --> "+data;
+                $scope.error.messsage = "Erreur: getLastTag --> "+data.toString();
                 $scope.updating = 0;
             }
         );
@@ -306,7 +308,7 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         }).error(
             function(data, status, headers, config) {
                 $scope.error.has = true;
-                $scope.error.messsage = "Erreur: newTag --> "+data;
+                $scope.error.messsage = "Erreur: newTag --> "+data.toString();
             }
         );
     };
