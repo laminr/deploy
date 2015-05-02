@@ -14,9 +14,9 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     $scope.error = { has : false, message: ""};
 
     $scope.server = {
-        qualif :  { name : "qualif", show : true},
-        preprod : { name : "preprod", show : false},
-        prod:     { name : "prod", show : false}
+        qualif :  { name : "qualif" },
+        preprod : { name : "preprod" },
+        prod:     { name : "prod" }
     };
 
     $scope.branch = {
@@ -45,22 +45,6 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
     $scope.fetchMsg   = [];
 
     $scope.showServer = function (server) {
-
-        if(server.name == $scope.server.qualif.name) {
-            $scope.server.qualif.show = true;
-            $scope.server.preprod.show = false;
-            $scope.server.prod.show = false;
-        }
-        else if(server.name == $scope.server.preprod.name) {
-            $scope.server.qualif.show = false;
-            $scope.server.preprod.show = true;
-            $scope.server.prod.show = false;
-        }
-        else if(server.name == $scope.server.prod.name) {
-            $scope.server.qualif.show = false;
-            $scope.server.preprod.show = false;
-            $scope.server.prod.show = true;
-        }
 
         $scope.current.env = server;
         $scope.fetchMsg = [];

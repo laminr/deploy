@@ -1,15 +1,21 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
-    <h1>Project creation</h1>
 
-    {{ form(form) }}
+<div class="container">
+    <div class="col-sm-6 col-sm-offset-3">
+        <h1>Project creation</h1>
+
+        {{ form(form) }}
 
         <ul class="record_actions">
-    <li>
-        <a href="{{ path('project') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+            <li>
+                <a href="{{ path('project') }}">
+                    Back to the list
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</div>
 {% endblock %}

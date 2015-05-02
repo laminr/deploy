@@ -43,17 +43,13 @@
         <!-- COLONE 2 -->
         <div id="project" class="col-sm-9" ng-show="selected">
             {{ include('RsvDeployBundle:Default:spinner.html.twig') }}
-            <div id="qualif" ng-show="server.qualif.show" class="row">
+            
+            <div id="qualif" class="row">
                 {{ include('RsvDeployBundle:Default:update.html.twig') }}
             </div>
-            <div id="preprod" ng-show="server.preprod.show" class="row">
-                {{ include('RsvDeployBundle:Default:update.html.twig') }}
-            </div>
-            <!-- PROD -->
-            <div id="prod" ng-show="server.prod.show" class="row">
+            <div ng-show="server.prod.show" class="row">
                 {{ include('RsvDeployBundle:Default:prod.html.twig') }}
             </div>
-
             <code class="col-xs-12" id="bash-return">
                 <div ng-repeat="msg in fetchMsg">[[msg]]</div>
             </code>
