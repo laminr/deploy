@@ -16,13 +16,13 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav" ng-show="selected">
-                <li ng-class="{ active: server.qualif.show}" ng-click="showServer(server.qualif)">
+                <li ng-class="{ active: current.env == server.qualif}" ng-click="showServer(server.qualif)">
                     <a href="#">
                         {% trans %}rsv3.server.qualif{% endtrans %}<span class="sr-only">(current)</span>
                     </a>
                 </li>
-                <li ng-class="{ active: server.preprod.show}"><a href="#" ng-click="showServer(server.preprod)">{% trans %}rsv3.server.preprod{% endtrans %}</a></li>
-                <li ng-class="{ prod : server.prod.show}"><a href="#" ng-click="showServer(server.prod)">{% trans %}rsv3.server.prod{% endtrans %}</a></li>
+                <li ng-class="{ active: current.env == server.preprod}"><a href="#" ng-click="showServer(server.preprod)">{% trans %}rsv3.server.preprod{% endtrans %}</a></li>
+                <li ng-class="{ prod : current.env == server.prod}"><a href="#" ng-click="showServer(server.prod)">{% trans %}rsv3.server.prod{% endtrans %}</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
 

@@ -47,7 +47,7 @@
             <div id="qualif" class="row">
                 {{ include('RsvDeployBundle:Default:update.html.twig') }}
             </div>
-            <div ng-show="server.prod.show" class="row">
+            <div ng-show="current.env == server.prod" class="row">
                 {{ include('RsvDeployBundle:Default:prod.html.twig') }}
             </div>
             <code class="col-xs-12" id="bash-return">
