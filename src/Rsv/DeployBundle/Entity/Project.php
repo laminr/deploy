@@ -3,6 +3,8 @@
 namespace Rsv\DeployBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Rsv\DeployBundle\Entity\Command;
 
 /**
  * Project
@@ -84,6 +86,27 @@ class Project
      * @ORM\Column(name="tag", type="string", length=6, nullable=false)
      */
     private $tag;
+
+    /**
+     * @var integer
+     *
+     * @ORM\OneToMany(targetEntity="Command", mappedBy="project")
+     */
+    private $commands;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->commands = new ArrayCollection();
+    }
+
+    function __toString()
+    {
+        return $this->name . '[' . $this->environment . ']';
+    }
 
 
     /**
@@ -255,5 +278,38 @@ class Project
     public function getTag()
     {
         return $this->tag;
+    }
+
+    /**
+     * Add commands
+     *
+     * @param Command $commands
+     * @return Project
+     */
+    public function addCommand(Command $commands)
+    {
+        $this->commands[] = $commands;
+
+        return $this;
+    }
+
+    /**
+     * Remove commands
+     *
+     * @param Command $commands
+     */
+    public function removeCommand(Command $commands)
+    {
+        $this->commands->removeElement($commands);
+    }
+
+    /**
+     * Get commands
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCommands()
+    {
+        return $this->commands;
     }
 }

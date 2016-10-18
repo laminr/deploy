@@ -123,6 +123,22 @@ deployApp.controller('DeployCtrl', ['$scope', '$http', function ($scope, $http) 
         );
     };
 
+    var getCommands =  function() {
+        // all tags names
+        var url = params.urls.tagAll+"/"+$scope.selected;
+        $http.get(url).success(function(data) {
+            $scope.tag.list = data;
+            $scope.running.tag = 0;
+            if ($scope.running.branch == 0 && $scope.running.env == 0) $scope.updating = 0;
+        }).error(
+            function(data, status, headers, config) {
+                $scope.error.has = true;
+                $scope.error.messsage = "Erreur: getAllTags --> "+status;
+                if ($scope.running.tag == 0 && $scope.running.env == 0) $scope.updating = 0;
+            }
+        );
+    };
+
     $scope.getCurrentBranch = function() {
 
         $scope.updating = 1;

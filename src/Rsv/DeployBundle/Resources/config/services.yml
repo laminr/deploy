@@ -5,3 +5,7 @@ services:
     project.service:
         class: Rsv\DeployBundle\Manager\ProjectManager
         arguments: [ "@doctrine.orm.entity_manager" ]
+
+    comand.service:
+        class: Rsv\DeployBundle\Manager\CommandDataManager
+        arguments: [ "@doctrine.orm.entity_manager" ]

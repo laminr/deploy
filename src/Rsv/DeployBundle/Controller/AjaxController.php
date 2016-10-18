@@ -58,6 +58,57 @@ class AjaxController extends Controller
     /**
      * retour JSON de la liste des branches existante
      *
+     * @param int $commandId
+     * @return json
+     * @throws \Exception
+     * @internal param int $projectId
+     * @internal param String $projectName
+     * @internal param number $envId
+     *
+     * @Route("/command/{commandId}" , name="_ajax_command")
+     * @Method("GET")
+     * @Template()
+     */
+    public function executeCommandAction($commandId = 0) {
+
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = $this->get("project.service")->getProject($projectId);
+        $cmd = new CommandManager(AjaxController::$logger);
+
+        $data = $cmd->getBranchOrTagList($project, false);
+
+        $response = new JsonResponse();
+        return $response->setData( $data);
+    }
+
+    /**
+     * retour JSON de la liste des branches existante
+     *
+     * @param int $projectId
+     * @return json
+     * @throws \Exception
+     * @internal param String $projectName
+     * @internal param number $envId
+     *
+     * @Route("/commands/{projectId}" , name="_ajax_command_all")
+     * @Method("GET")
+     * @Template()
+     */
+    public function allCommandsAction($projectId = 0) {
+        if (AjaxController::$logger == null)
+            AjaxController::$logger = $this->get('logger');
+
+        $project = $this->get("project.service")->getProject($projectId);
+
+        $response = new JsonResponse();
+        return $response->setData($project->getCommands());
+    }
+
+    /**
+     * retour JSON de la liste des branches existante
+     *
      * @param int $projectId
      * @return json
      * @throws \Exception

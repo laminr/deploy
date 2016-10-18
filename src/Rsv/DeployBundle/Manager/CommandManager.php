@@ -10,6 +10,7 @@ namespace Rsv\DeployBundle\Manager;
 
 use Rsv\DeployBundle\Business\GitBusiness;
 use Rsv\DeployBundle\Business\SshBusiness;
+use Rsv\DeployBundle\Entity\Command;
 use Rsv\DeployBundle\Manager\ProjectManager;
 use Rsv\DeployBundle\Entity\Project;
 
@@ -21,6 +22,25 @@ class CommandManager {
 
     public function __construct(LoggerInterface $logger) {
         $this->logger = $logger;
+    }
+
+    public function executeCommand(Command $command) {
+
+        if ($command->getProject() == NULL) {
+            return "";
+        }
+
+        $root = $command->getProject()->getPath();
+        $folder = $command->getRootPath();
+        $path = 'cd '.$root. '; cd '.$folder;
+
+        $command = $path . '; ' . $command->getScript();
+
+        $ssh = new SshBusiness($this->logger);
+        $values = $ssh->execute($command->getProject(), $command);
+
+        return sizeof($values) > 0 ? $values : "";
+
     }
 
     /**

@@ -38,7 +38,7 @@ class ProjectRepository extends EntityRepository
     
     public function getProjectName() {
         
-        $sql = "SELECT p.id, p.name FROM ".Project::CLASS_NAME." p WHERE p.environment = '".Project::ENV_REPO."' GROUP BY p.name ORDER BY p.name";
+        $sql = "SELECT p.id, p.name FROM ".Project::CLASS_NAME." p WHERE p.environment = '".Project::ENV_REPO."' GROUP BY p.name, p.id ORDER BY p.name";
 		$query = $this->getEntityManager()->createQuery($sql);
 		
 		$events = $query->getResult();
