@@ -19,14 +19,14 @@ class SshBusiness {
         $this->logger = $logger;
     }
 
-    private function getConnection($domain, $user, $passwd) {
+    private function getConnection($domain, $user, $passwd, $port = 22) {
         $this->logger->info('server connection');
 
         $logged = null;
         //echo "domain: $domain user: $user password: $passwd";
 
         try {
-            $connection = ssh2_connect($domain, 22);
+            $connection = ssh2_connect($domain, $port);
             $logged = ssh2_auth_password($connection, $user, $passwd);
         } catch (Exception $e) {
             log_message('error', 'erreur connection SSH :'.$domain);
@@ -44,8 +44,9 @@ class SshBusiness {
         $domain	= $where->getDomain();
         $user 	= $where->getUser();
         $passwd = $where->getPassword();
+        $port = $where->getPort();
 
-        $connection = $this->getConnection($domain, $user, $passwd);
+        $connection = $this->getConnection($domain, $user, $passwd, $port);
 
         if ($connection) {
 

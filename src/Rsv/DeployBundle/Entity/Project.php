@@ -67,6 +67,13 @@ class Project
     /**
      * @var string
      *
+     * @ORM\Column(name="port", type="integer", nullable=false)
+     */
+    private $port = 22;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="user", type="string", length=40, nullable=false)
      */
     private $user;
@@ -186,6 +193,29 @@ class Project
     public function getPath()
     {
         return $this->path;
+    }
+
+    /**
+     * Set port
+     *
+     * @param integer $port
+     * @return Project
+     */
+    public function setPort($port)
+    {
+        $this->port = $port;
+
+        return $this;
+    }
+
+    /**
+     * Get port
+     *
+     * @return string
+     */
+    public function getPort()
+    {
+        return $this->port;
     }
 
     /**

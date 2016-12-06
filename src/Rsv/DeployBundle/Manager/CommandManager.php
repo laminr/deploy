@@ -112,11 +112,12 @@ class CommandManager {
 
     /**
      * Mise à jour de la source d'un projet
-     * @param string $envId : id de l'environnement et projet
+     * @param null|Project $project
      * @param string $branch : le nom de la branche
      * @return tableau message ssh de retour
+     * @internal param string $envId : id de l'environnement et projet
      */
-    public function doUpdateSource($project = NULL, $branch = "") {
+    public function doUpdateSource(Project $project = NULL, $branch = "") {
 
         if ($project == NULL) {
             return "";
