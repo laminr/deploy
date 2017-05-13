@@ -16,12 +16,15 @@ use Rsv\DeployBundle\Entity\Project;
 
 use Psr\Log\LoggerInterface;
 
-class CommandManager {
+class CommandManager extends BaseManager {
 
     private $logger;
 
-    public function __construct(LoggerInterface $logger) {
+    protected $em;
+
+    public function __construct(LoggerInterface $logger, ObjectManager $em) {
         $this->logger = $logger;
+        $this->em = $em;
     }
 
     public function executeCommand(Command $command) {
@@ -40,6 +43,10 @@ class CommandManager {
         $values = $ssh->execute($command->getProject(), $command);
 
         return sizeof($values) > 0 ? $values : "";
+
+    }
+
+    public function getCommand($commandId = 0) {
 
     }
 

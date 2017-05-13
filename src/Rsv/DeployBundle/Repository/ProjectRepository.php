@@ -9,29 +9,6 @@ use Rsv\DeployBundle\Entity\Project;
 class ProjectRepository extends EntityRepository
 {
 
-/*
-	public function findAllComingFights() {
-
-		return $this->findByType(Label::EVT_FIGHT);
-	}
-
-	private function findByType($value, $all = true) {
-		
-		$sql = 'SELECT event FROM CeladCecileBundle:Project event ';
- 		$sql .= 'INNER JOIN e.type t  ';
-		$sql .= 'WHERE t.type = :type ';
-		$sql .= 'AND t.value = :value ';
-		$sql .= 'ORDER BY e.when ASC';
-		
-		$query = $this->getEntityManager()->createQuery($sql);
-		$query->setParameter('type', Label::TYPE_EVT);
-		$query->setParameter('value', $value);
-		
-		$events = $query->getResult();
-		return $events;
-	}
-    
-*/
     public function getProject($id = 0) {
         return $this->find($id);
     }

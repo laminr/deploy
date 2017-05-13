@@ -97,13 +97,13 @@ class AjaxController extends Controller
      * @Template()
      */
     public function allCommandsAction($projectId = 0) {
+
         if (AjaxController::$logger == null)
             AjaxController::$logger = $this->get('logger');
 
         $project = $this->get("project.service")->getProject($projectId);
-
         $response = new JsonResponse();
-        return $response->setData($project->getCommands());
+        return $response->setData($project);
     }
 
     /**
